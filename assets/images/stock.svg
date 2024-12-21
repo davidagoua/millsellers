@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.5" height="19.5" viewBox="0 0 19.5 19.5">
+  <g id="Groupe_20257" data-name="Groupe 20257" transform="translate(-1.23 -1.549)">
+    <g id="box" transform="translate(1.23 -30.451)">
+      <path id="Tracé_342" data-name="Tracé 342" d="M10.446,37.571H19.5V48.714A2.788,2.788,0,0,1,16.714,51.5H2.786A2.787,2.787,0,0,1,0,48.714V37.571H9.054V32h1.393Z" transform="translate(0 0)" fill="#199e46"/>
+      <path id="Tracé_343" data-name="Tracé 343" d="M9.054,32v5.571H0l2.208-4.417A2.089,2.089,0,0,1,4.077,32Zm6.368,0a2.1,2.1,0,0,1,1.872,1.155L19.5,37.571H10.446V32Z" transform="translate(0 0)" fill="#199e46" opacity="0.4"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,55 @@
+name: millsellers
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+dependencies:
+  cupertino_icons: ^1.0.6
+  get: 4.6.6
+  font_awesome_flutter: ^10.8.0
+  velocity_x:
+    git:
+      url: https://github.com/chihuy105/VelocityX.git
+      ref: stable
+  google_fonts: 6.2.1
+  getwidget: ^5.0.0
+  onboarding: 4.0.2
+  animate_do: 3.3.4
+  extended_phone_number_input: 1.0.2
+  slide_switcher: 1.1.2
+  file_picker: ^8.1.6
+  ionicons: 0.2.2
+  get_storage: 2.1.1
+  dio: ^5.7.0
+  lottie: ^3.3.0
+  share_extend: 2.0.0
+  liquid_pull_to_refresh: 3.0.1
+  dropdown_search: ^6.0.1
+  icons_launcher: ^3.0.0
+  logger:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+icons_launcher:
+  image_path: "assets/images/logo.jpg"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+    windows:
+      enable: true
+
+flutter:
+  assets:
+    - assets/
+    - assets/images/
+  uses-material-design: true
