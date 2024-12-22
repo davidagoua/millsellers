@@ -18,6 +18,7 @@ abstract class Routes {
   static const FIEUL = _Paths.FIEUL;
   static const COMMANDE_LIST = _Paths.COMMANDE_LIST;
   static const RECHARGE = _Paths.RECHARGE;
+  static const PRODUCT_LIST = _Paths.PRODUCT_LIST;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const FIEUL = '/fieul';
   static const COMMANDE_LIST = '/commande-list';
   static const RECHARGE = '/recharge';
+  static const PRODUCT_LIST = '/product_list';
 }

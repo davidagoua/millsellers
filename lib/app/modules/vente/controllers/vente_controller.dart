@@ -31,6 +31,7 @@ class VenteController extends GetxController {
   }
 
   Future<void> getVentes() async {
+    loading.value = true;
     final authManager = Get.find<AuthController>();
 
     var headers = {
@@ -56,5 +57,6 @@ class VenteController extends GetxController {
     }else {
       print(response.statusMessage);
     }
+    loading.value = false;
   }
 }

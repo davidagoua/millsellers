@@ -127,7 +127,7 @@ class IndexView extends GetView<IndexController> {
         ),
         child: FloatingActionButton(
           shape: const CircleBorder(),
-          onPressed: () => {Get.toNamed(Routes.NEWSELL)},
+          onPressed: () => {Get.toNamed(Routes.PRODUCT_LIST)},
           backgroundColor: Colors.transparent,
           child: const Icon(
             Ionicons.bag_outline,

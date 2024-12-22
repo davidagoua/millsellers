@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:get/get.dart';
 import 'package:millsellers/app/data/models/sale_model.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -29,14 +29,11 @@ class VenteView extends GetView<VenteController> {
         ).w(double.maxFinite),
         10.heightBox,
         Obx(() => controller.sales.isNotEmpty
-            ? VStack(controller.sales
-            .map((sale) => ListTile(
-          title: sale.amount.toString().text.make(),
-        ))
-            .toList())
-            : CircularProgressIndicator(
-          color: Vx.green700,
-        ).centered())
+            ? LiquidPullToRefresh(
+              onRefresh: controller.getVentes,
+              child: VStack(controller.sales.map((sale) => venteWidget(sale)).toList()).scrollVertical()
+              ).h(double.maxFinite)
+            : VStack(["Aucune vente réalisée".text.make()]).centered())
       ]).p(15),),
     );
   }

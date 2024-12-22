@@ -21,6 +21,8 @@ class NewsellController extends GetxController {
   var contactCtrl = TextEditingController();
   var formKey = GlobalKey<FormState>();
   var customerId = "";
+  var product_id = "".obs;
+  var product_name = "".obs;
   final loading = false.obs;
 
 
@@ -29,6 +31,12 @@ class NewsellController extends GetxController {
     Map<String, dynamic>? args = Get.parameters;
     if(args['id'] != null){
       customerId = args['id']!;
+    }
+    if(args['product_id'] != null){
+      product_id.value = args['product_id'];
+    }
+    if(args['product_name'] != null){
+      product_id.value = args['product_name'];
     }
   }
 
@@ -54,7 +62,8 @@ class NewsellController extends GetxController {
 
     if(customerId.isEmpty){
       data = json.encode({
-        "customer_id": null,
+        "customer_id": customerId,
+        "product_id": product_id.value,
         "person": {
           "name": nameCtrl.text,
           "phone": contactCtrl.text,
@@ -64,7 +73,7 @@ class NewsellController extends GetxController {
             "address": addressCtrl.text
           }
         },
-        "quantity": uniteCtrl.text,
+        "quantity":  uniteCtrl.text ,
         "amount": priceCtrl.text
       });
     }
@@ -81,17 +90,17 @@ class NewsellController extends GetxController {
       ),
       data: data,
     );
-    print(response.requestOptions);
-    if (response.statusCode == 201) {
+    print(response.data);
+    if (response.statusCode == 200) {
       print(json.encode(response.data));
+      Get.snackbar("Excellent !", "Votre vente a été enrégistrée", colorText: Colors.white, backgroundColor: Colors.green[500]);
       SellerResource resource = SellerResource.fromJson(GetStorage().read("user"));
       resource.setStock();
       resource.setSolde();
       resource.setVentes();
 
-      Get.snackbar("Excellent !", "Votre vente a été enrégistrée", colorText: Colors.white, backgroundColor: Colors.green[500]);
-    }
-    else {
+    }else {
+      Get.snackbar("Désolé !", "Une erreur est survenu lors de l'enregistrement de votre commande.", colorText: Colors.white, backgroundColor: Colors.red[500]);
       print(response.statusMessage);
     }
     loading.value = false;

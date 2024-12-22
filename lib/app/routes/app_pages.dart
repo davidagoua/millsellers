@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:millsellers/app/modules/ProductList/product_list_binding.dart';
+import 'package:millsellers/app/modules/ProductList/product_list_view.dart';
 
 import '../modules/CommandeList/bindings/commande_list_binding.dart';
 import '../modules/CommandeList/views/commande_list_view.dart';
@@ -114,5 +116,10 @@ class AppPages {
       page: () => const RechargeView(),
       binding: RechargeBinding(),
     ),
+    GetPage(
+      name: _Paths.PRODUCT_LIST,
+      page: () => const ProductListView(),
+      binding: ProductListBinding()
+    )
   ];
 }
