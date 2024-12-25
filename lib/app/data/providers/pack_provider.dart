@@ -9,7 +9,6 @@ final logger = Logger();
 class PackProvider extends GetConnect {
   @override
   void onInit() {
-
     //httpClient.baseUrl = BASE_URL;
   }
 
@@ -18,15 +17,15 @@ class PackProvider extends GetConnect {
     final response = await get('https://api.1000vendeurs.academy/api/packs');
     logger.d(response.request?.url);
 
-    if(response.statusCode! == 200){
-      data = (response.body! as List<dynamic>).map(( entry){
+    if (response.statusCode! == 200) {
+      data = (response.body!['data'] as List<dynamic>).map((entry) {
         return Pack.fromJson(entry);
       }).toList();
       return data;
-    }else{
+    } else {
       logger.e(response.statusCode!);
     }
-    return data;
+    return [];
   }
 
   Future<Pack?> getPack(int id) async {

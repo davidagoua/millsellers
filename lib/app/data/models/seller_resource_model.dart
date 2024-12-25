@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
 import 'package:millsellers/app/data/models/sale_model.dart';
 import 'package:millsellers/utils/contants.dart';
+import 'package:logger/logger.dart';
+
+
+final logger = Logger();
 
 class SellerResource {
   int? customers;
@@ -61,7 +65,7 @@ class SellerResource {
     return data;
   }
 
-  Future<void> setSolde() async {
+  Future<int?> setSolde() async {
     final authManager = Get.find<AuthController>();
 
 
@@ -79,15 +83,18 @@ class SellerResource {
           validateStatus: (value)=> true
         ),
       );
-      print("headers: ${response.requestOptions.headers}");
+
+      
+
       if (response.statusCode == 200) {
         balance = response.data['balance'];
       }else {
         print(response.statusMessage);
       }
+      return balance;
   }
 
-  Future<void> setStock() async {
+  Future<int?> setStock() async {
     final authManager = Get.find<AuthController>();
 
 
@@ -105,13 +112,16 @@ class SellerResource {
           validateStatus: (value)=> true
       ),
     );
-    print("headers: ${response.requestOptions.headers}");
+    
     if (response.statusCode == 200) {
       stock = response.data['stock'];
+      
       print("stock $stock");
     }else {
       print(response.statusMessage);
     }
+
+    return stock;
   }
 
   Future<void> setVentes() async {

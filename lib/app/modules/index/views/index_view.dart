@@ -87,7 +87,7 @@ class IndexView extends GetView<IndexController> {
                       color: Colors.red,
                     ),
                     title: "Se déconnecter".text.color(Colors.red).make(),
-                  ).card.elevation(0).red100.roundedSM.make(),
+                  ).card.elevation(0).red100.roundedSM.make().px(5),
                 ],
                 alignment: MainAxisAlignment.spaceBetween,
               ).h(Get.height / 10 * 8.5)
@@ -96,12 +96,7 @@ class IndexView extends GetView<IndexController> {
         ),
       ),
       body: SafeArea(
-        child: Obx(() => LiquidPullToRefresh(
-          key: GlobalKey(),
-          onRefresh: ()async{
-            ;
-          },
-          child: IndexedStack(
+        child: Obx(() => IndexedStack(
             index: controller.index.value,
             children: [
               ResumeView(),
@@ -109,8 +104,7 @@ class IndexView extends GetView<IndexController> {
               CommandeListView(),
               FieulView()
             ],
-          ),
-        )),
+          )),
       ),
       floatingActionButton: Container(
         decoration: const BoxDecoration(
@@ -141,7 +135,7 @@ class IndexView extends GetView<IndexController> {
           color: Colors.white,
           elevation: 7,
           shadowColor: Vx.gray500,
-          height: Get.height / 10 * 1,
+          height: MediaQuery.of(context).size.height / 10 * 1,
           padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           shape: const CircularNotchedRectangle(),
           child: Obx(() => HStack(

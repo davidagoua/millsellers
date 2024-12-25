@@ -16,23 +16,7 @@ class FirstProductView extends GetView<FirstProductController> {
   Widget build(BuildContext context) {
 
     return Obx((){
-      if(controller.packs.isEmpty && !controller.packsLoading.value){
-        return SafeArea(
-          child: Container(
-            color: const Color.fromRGBO(246, 251, 248, 1),
-            child:  Center(
-              child:  SizedBox(
-                height: Get.height / 10 *3,
-                width: double.maxFinite,
-                child: Container(
-
-                  child: "Aucun pack disponible".text.size(25).make().centered()
-                ).card.make()
-              ),
-            ),
-          ),
-        );
-      }else if(controller.packs.isEmpty && controller.packsLoading.value){
+       if(controller.packs.isEmpty && controller.packsLoading.value){
         return SafeArea(
           child: Container(
             color: const Color.fromRGBO(246, 251, 248, 1),

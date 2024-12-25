@@ -14,10 +14,11 @@ class VenteController extends GetxController {
   final sales = [].obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     resource.value = SellerResource.fromJson(GetStorage().read("user"));
     print("sales ${resource.value.sales}");
+    await getVentes();
   }
 
   @override

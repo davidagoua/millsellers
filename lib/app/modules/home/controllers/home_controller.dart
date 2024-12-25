@@ -4,16 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart' hide FormData;
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
 import 'package:millsellers/app/data/models/seller_resource_model.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
+import 'package:millsellers/utils/contants.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomeController extends GetxController {
 
+  final Logger logger = Logger();
+
   final formKey = GlobalKey<FormState>();
-  final contactCtrl = TextEditingController();
-  final password = TextEditingController();
+  final contactCtrl = TextEditingController(text:"sikirou@1000vendeurs.academy");
+  final password = TextEditingController(text:"azerty123");
   final showError = false.obs;
   final showPassword = true.obs;
   final loading = false.obs;
@@ -48,9 +52,9 @@ class HomeController extends GetxController {
 
         final authManager = Get.find<AuthController>();
         authManager.login(response.data['token']);
-        print("token ${response.data}");
+        
 
-        final meResponse = await dio.get('https://api.1000vendeurs.academy/api/seller/me', options: Options(
+        final meResponse = await dio.get('$BASE_URL/seller/me', options: Options(
           followRedirects: false,
           validateStatus: (status) {
             return status! < 500;
@@ -61,7 +65,7 @@ class HomeController extends GetxController {
             "Authorization":"Bearer ${response.data['token']}"
             }
         ));
-        print(meResponse.statusCode);
+        
         if(meResponse.statusCode == 200){
           print(meResponse.data['data']);
           final resource = SellerResource.fromJson(meResponse.data['data']);

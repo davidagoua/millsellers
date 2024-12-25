@@ -19,6 +19,8 @@ abstract class Routes {
   static const COMMANDE_LIST = _Paths.COMMANDE_LIST;
   static const RECHARGE = _Paths.RECHARGE;
   static const PRODUCT_LIST = _Paths.PRODUCT_LIST;
+  static const PROFILE = _Paths.PROFILE;
+  static const PRODUCT_DETAILS = _Paths.PRODUCT_DETAILS;
 }
 
 abstract class _Paths {
@@ -39,4 +41,6 @@ abstract class _Paths {
   static const COMMANDE_LIST = '/commande-list';
   static const RECHARGE = '/recharge';
   static const PRODUCT_LIST = '/product_list';
+  static const PROFILE = '/profile';
+  static const PRODUCT_DETAILS = '/product-details';
 }

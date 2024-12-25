@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:millsellers/app/modules/ProductList/product_list_binding.dart';
 import 'package:millsellers/app/modules/ProductList/product_list_view.dart';
@@ -32,6 +33,10 @@ import '../modules/resume/bindings/resume_binding.dart';
 import '../modules/resume/views/resume_view.dart';
 import '../modules/vente/bindings/vente_binding.dart';
 import '../modules/vente/views/vente_view.dart';
+import '../modules/profile/bindings/profile_binding.dart';
+import '../modules/profile/views/profile_view.dart';
+import '../modules/product_details/bindings/product_details_binding.dart';
+import '../modules/product_details/views/product_details_view.dart';
 
 part 'app_routes.dart';
 
@@ -120,6 +125,16 @@ class AppPages {
       name: _Paths.PRODUCT_LIST,
       page: () => const ProductListView(),
       binding: ProductListBinding()
-    )
+    ),
+    GetPage(
+      name: _Paths.PROFILE,
+      page: () => const ProfileView(),
+      binding: ProfileBinding()
+    ),
+    GetPage(
+      name: _Paths.PRODUCT_DETAILS,
+      page: () => const ProductDetailsView(),
+      binding: ProductDetailsBinding()
+    ),
   ];
 }

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:millsellers/app/routes/app_pages.dart';
 import '../../data/models/product_model.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
 import 'package:millsellers/utils/contants.dart';
@@ -10,12 +11,16 @@ class ProductListController extends GetxController {
   final products = <Product>[].obs;
   final isLoading = false.obs;
   final dio = Dio();
+  final next_route = "".obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchProduct();
+    next_route.value = Get.arguments?['next_route'] ?? Routes.NEWSELL;
   }
+
+  
    @override
   void onReady() {
     super.onReady();
@@ -30,7 +35,7 @@ class ProductListController extends GetxController {
   Future<void> fetchProduct() async {
     try {
       isLoading.value = true;
-      
+
       // Configuration de l'en-tête avec le token d'authentification
       final options = Options(
         headers: {
@@ -47,7 +52,7 @@ class ProductListController extends GetxController {
 
       if (response.statusCode == 200) {
         final List<dynamic> productsJson = response.data['data'];
-        
+
         // Conversion des données JSON en objets Product
         products.value = productsJson
             .map((json) => Product.fromJson(json))

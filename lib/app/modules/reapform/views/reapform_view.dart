@@ -19,181 +19,194 @@ class ReapformView extends GetView<ReapformController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(246, 251, 248, 1),
-      body:  Builder(
-        builder: (context)=>SafeArea(child: Form(
-          key: controller.formKey,
-          child: VStack([
-            HStack([
-              Container(
-                  color: Colors.white,
-                  child: const Icon(Icons.close, color: Vx.gray700,)
-              ).cornerRadius(7).onTap(Get.back),
-            ], alignment: MainAxisAlignment.start,).pSymmetric(h: 10).w(double.maxFinite),
-            10.heightBox,
-            "Réapprovisionnement".text.color(const Color.fromRGBO(41, 156, 22, 1)).size(22).make(),
-            "Veuillez remplir les champs ci-dessous".text.size(12).align(TextAlign.center).color(Vx.gray700).make(),
-            15.heightBox,
+      body:  VStack([
+        Builder(
+          builder: (context)=>SafeArea(child: VStack([
+              HStack([
+                Container(
+                  color: const Color.fromRGBO(236, 249, 242, 1),
+                  child: const Icon(Icons.close, color: Vx.green500,)
+                ).cornerRadius(7).onTap(Get.back),
+            
+                Expanded(child: "Réapprovisionnement".text.color(const Color.fromRGBO(41, 156, 22, 1)).size(22).make().centered()),
+              ], alignment: MainAxisAlignment.spaceBetween, crossAlignment: CrossAxisAlignment.center).pSymmetric(h: 10).w(double.maxFinite),
+              
+              
+              
+            ], crossAlignment: CrossAxisAlignment.center,).scrollVertical().p(15),
+          ),
+        ),
+        10.heightBox,
+        Expanded(
+          child: Form(
+            key: controller.formKey,
+            child:VStack([
+              "Veuillez remplir les champs ci-dessous".text.size(12).align(TextAlign.center).color(Vx.gray700).make().centered(),
+              10.heightBox,  
 
-            VStack([
-              "Nom & prenoms (Personne à contacter)".text.make(),
-              7.heightBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: const Color.fromRGBO(243, 243, 243, 1),
-                child: TextFormField(
-                  controller: controller.nameCtrl,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(FontAwesomeIcons.user, size: 13,),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ).cornerRadius(7)
-            ]),
-            10.heightBox,
-            VStack([
-              "Pays".text.align(TextAlign.left).make(),
-              5.heightBox,
-              InputWrapperView(
-                child: DropdownSearch<String>(
-                  items: (value, leadProps)=> kCountries.valuesList(),
-                  onChanged: (item)=>{
-                    controller.countryCtrl.text = item ?? "Côte d'Ivoire"
-                  },
-                  popupProps: PopupProps.menu(
-                    showSelectedItems: true,
-                    disabledItemFn: (String s) => s.startsWith('I'),
-                  ),
-                ),
-              ),
-            ]),
-            10.heightBox,
-            VStack([
-              "Ville".text.make(),
-              7.heightBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: const Color.fromRGBO(243, 243, 243, 1),
-                child: TextFormField(
-                  controller: controller.villeCtrl,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(FontAwesomeIcons.building, size: 13,),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ).cornerRadius(7)
-            ]),
-            10.heightBox,
-            VStack([
-              "Adresse".text.make(),
-              7.heightBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: const Color.fromRGBO(243, 243, 243, 1),
-                child: TextFormField(
-                  controller: controller.addressCtrl,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(FontAwesomeIcons.mapLocation, size: 13,),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ).cornerRadius(7)
-            ]),
-            10.heightBox,
-            VStack([
-              "Numero de téléphone".text.make(),
-              7.heightBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: const Color.fromRGBO(243, 243, 243, 1),
-                child:  PhoneNumberInput(
-                  onChanged: (value)=>{
-                    controller.phoneCTrl.text = value
-                  },
-                  errorText: "Numéro de téléphone incorrecte",
-                  border: InputBorder.none,
-                  locale: 'fr',
-                  initialCountry: 'CI',
-                  countryListMode: CountryListMode.dialog,
-                  contactsPickerPosition: ContactsPickerPosition.suffix,
-                ),
-              ).cornerRadius(15)
-            ]),
-            20.heightBox,
-            VStack([
-              "Taille Tshirt".text.align(TextAlign.left).make(),
-              5.heightBox,
-              InputWrapperView(
-                child: DropdownButtonFormField(
-                  isExpanded: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  borderRadius: BorderRadius.circular(5),
-                  decoration: const InputDecoration(
-                      fillColor: Color.fromRGBO(243, 243, 243, 1),
-                      border: InputBorder.none
-                  ),
-                  isDense: true,
-                  items: [
-                    "S",
-                    "M",
-                    "L",
-                    "XL",
-                    "XXL",
-                  ].map((String value)=> DropdownMenuItem(value: value, child: value.text.make(),)).toList(),
-                  onChanged: (item)=>{
-                    controller.shopSizeCtrl.text = item ?? "SM"
-                  },
-
-
-                ),
-              ),
-            ]),
-            10.heightBox,
-            HStack([
-              VStack([
-                "Quantité".text.make(),
-                InputWrapperView(
-                  child: Obx(()=>TextFormField(
-                    onChanged: (value)=>{
-                      controller.unite.value = int.parse(value)
-                    },
-                    decoration:  InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "${controller.unite}",
+                VStack([
+                  "Nom & prenoms (Personne à contacter)".text.make(),
+                  7.heightBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    color: const Color.fromRGBO(243, 243, 243, 1),
+                    child: TextFormField(
+                      controller: controller.nameCtrl,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(FontAwesomeIcons.user, size: 13,),
+                        border: InputBorder.none,
+                      ),
                     ),
-                    keyboardType: TextInputType.number,
-                  )),
-                )
-              ]).w(Get.width / 12  * 3),
-              10.widthBox,
-              VStack([
-                "Coût".text.make(),
-                InputWrapperView(
-                  child: Obx(()=>TextFormField(
-                    enabled: false,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "${controller.unite.value * 30000} XOF",
+                  ).cornerRadius(7)
+                ]),
+                10.heightBox,
+                VStack([
+                  "Pays".text.align(TextAlign.left).make(),
+                  5.heightBox,
+                  InputWrapperView(
+                    child: DropdownSearch<String>(
+                      items: (value, leadProps)=> kCountries.valuesList(),
+                      onChanged: (item)=>{
+                        controller.countryCtrl.text = item ?? "Côte d'Ivoire"
+                      },
+                      popupProps: PopupProps.menu(
+                        showSelectedItems: true,
+                        disabledItemFn: (String s) => s.startsWith('I'),
+                      ),
                     ),
-                    keyboardType: TextInputType.number,
-                  )),
+                  ),
+                ]),
+                10.heightBox,
+                VStack([
+                  "Ville".text.make(),
+                  7.heightBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    color: const Color.fromRGBO(243, 243, 243, 1),
+                    child: TextFormField(
+                      controller: controller.villeCtrl,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(FontAwesomeIcons.building, size: 13,),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ).cornerRadius(7)
+                ]),
+                10.heightBox,
+                VStack([
+                  "Adresse".text.make(),
+                  7.heightBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    color: const Color.fromRGBO(243, 243, 243, 1),
+                    child: TextFormField(
+                      controller: controller.addressCtrl,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(FontAwesomeIcons.mapLocation, size: 13,),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ).cornerRadius(7)
+                ]),
+                10.heightBox,
+                VStack([
+                  "Numero de téléphone".text.make(),
+                  7.heightBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    color: const Color.fromRGBO(243, 243, 243, 1),
+                    child:  PhoneNumberInput(
+                      onChanged: (value)=>{
+                        controller.phoneCTrl.text = value
+                      },
+                      errorText: "Numéro de téléphone incorrecte",
+                      border: InputBorder.none,
+                      locale: 'fr',
+                      initialCountry: 'CI',
+                      countryListMode: CountryListMode.dialog,
+                      contactsPickerPosition: ContactsPickerPosition.suffix,
+                    ),
+                  ).cornerRadius(15)
+                ]),
+                20.heightBox,
+                VStack([
+                  "Taille Tshirt".text.align(TextAlign.left).make(),
+                  5.heightBox,
+                  InputWrapperView(
+                    child: DropdownButtonFormField(
+                      isExpanded: false,
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      borderRadius: BorderRadius.circular(5),
+                      decoration: const InputDecoration(
+                          fillColor: Color.fromRGBO(243, 243, 243, 1),
+                          border: InputBorder.none
+                      ),
+                      isDense: true,
+                      items: [
+                        "S",
+                        "M",
+                        "L",
+                        "XL",
+                        "XXL",
+                      ].map((String value)=> DropdownMenuItem(value: value, child: value.text.make(),)).toList(),
+                      onChanged: (item)=>{
+                        controller.shopSizeCtrl.text = item ?? "SM"
+                      },
+
+
+                    ),
+                  ),
+                ]),
+                10.heightBox,
+                HStack([
+                  VStack([
+                    "Quantité".text.make(),
+                    InputWrapperView(
+                      child: Obx(()=>TextFormField(
+                        controller: controller.quantityCtrl,
+                        onChanged: (value)=>{
+                          controller.unite.value = int.parse(value)
+                        },
+                        decoration:  InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "${controller.unite.value}",
+                        ),
+                        keyboardType: TextInputType.number,
+                      )),
+                    )
+                  ]).w(Get.width / 12  * 3),
+                  10.widthBox,
+                  VStack([
+                    "Coût".text.make(),
+                    InputWrapperView(
+                      child: Obx(()=>TextFormField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "${ (controller.price.value  * controller.unite.value).toString().numCurrency} FCFA",
+                        ),
+                        keyboardType: TextInputType.number,
+                      )),
+                    )
+                  ]).expand(flex: 1),
+                ]),
+                40.heightBox,
+                GFButton(
+                  icon: Obx(()=> controller.loading() ? const CircularProgressIndicator(color: Color.fromRGBO(35, 135, 19, 1),strokeWidth: 2,).p(5) : const SizedBox()),
+                  hoverElevation: 0,
+                  type: GFButtonType.outline,
+                  size: GFSize.LARGE,
+                  onPressed: controller.submit,
+                  blockButton: true,
+                  shape: GFButtonShape.pills,
+                  color: const Color.fromRGBO(35, 135, 19, 1),
+                  child: "Payer maintenant".text.make(),
                 )
-              ]).expand(flex: 1),
-            ]),
-            40.heightBox,
-            GFButton(
-              icon: Obx(()=> controller.loading() ? const CircularProgressIndicator(color: Color.fromRGBO(35, 135, 19, 1),strokeWidth: 2,).p(5) : const SizedBox()),
-              hoverElevation: 0,
-              type: GFButtonType.outline,
-              size: GFSize.LARGE,
-              onPressed: controller.submit,
-              blockButton: true,
-              shape: GFButtonShape.pills,
-              color: const Color.fromRGBO(35, 135, 19, 1),
-              child: "Payer maintenant".text.make(),
-            )
-          ], crossAlignment: CrossAxisAlignment.center,).scrollVertical().p(23),
-        )),
-      ),
+            ]).p(15).scrollVertical(),
+          )
+        )
+
+      ]),
     );
   }
 

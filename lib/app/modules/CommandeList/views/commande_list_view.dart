@@ -38,16 +38,16 @@ class CommandeListView extends GetView<CommandeListController> {
             alignment: MainAxisAlignment.spaceBetween,
             crossAlignment: CrossAxisAlignment.center,
           ).w(double.maxFinite),
+          
           10.heightBox,
+
           Obx(() => controller.orders.isNotEmpty
               ? VStack(controller.orders
-                  .map((f) => ListTile(
-                        title: f['amount'].toString().text.make(),
+                  .map((order) => ListTile(
+                        title: order.amount.toString().text.make(),
                       ))
                   .toList())
-              : CircularProgressIndicator(
-                  color: Vx.green700,
-                ).centered())
+              : VStack(["Aucune commande en cours".text.make()]).centered())
         ]).p(15),
       ),
     );
