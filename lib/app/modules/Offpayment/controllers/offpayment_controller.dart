@@ -49,10 +49,7 @@ class OffpaymentController extends GetxController {
         "phone": registerSchema?.sellerPhone,
         "gender": registerSchema?.sellerGender,
         "profession": registerSchema?.sellerProfession,
-        "tshirt": {
-          "delivery_place": "${registerSchema?.sellerTshirtDeleveryPlace}",
-          "size": (registerSchema?.sellerTshirtSize as String).toLowerCase()
-        },
+        "tshirt": (registerSchema?.sellerTshirtSize as String).toLowerCase(),
         "place": {
           "country": registerSchema?.sellerPlaceCountry,
           "city": registerSchema?.sllerPlaceCity,
@@ -83,8 +80,7 @@ class OffpaymentController extends GetxController {
       'seller.email': registerSchema?.sellerEmail,
       'seller.gender': registerSchema?.sellerGender,
       'seller.profession': registerSchema?.sellerProfession,
-      'seller.tshirt.delivery_place': registerSchema?.sellerTshirtDeleveryPlace,
-      'seller.tshirt.size': (registerSchema?.sellerTshirtSize as String).toLowerCase(),
+      'seller.tshirt': (registerSchema?.sellerTshirtSize as String).toLowerCase(),
       'seller.password': registerSchema?.sellerPassword ?? 'password'
     });
 
@@ -109,45 +105,46 @@ class OffpaymentController extends GetxController {
       final box = GetStorage();
       await box.write('adhesion_token', response.data["token"]);
       await box.write("isOnboard", true);
+      Get.dialog(Container(
+        height: Get.height / 10 * 1,
+        padding: const EdgeInsets.all(20),
+        child: VStack(
+          [
+            Lottie.network(
+                "https://lottie.host/f8318bb0-a076-4adb-b2d5-b08d3e86984c/VbyuTssOV6.json",
+                height: 200,
+                width: 200),
+            10.heightBox,
+            "Votre compte est en cours de validation ..."
+                .text
+                .align(TextAlign.center)
+                .make(),
+            "Vous serez notifier à l'activation du compte"
+                .text
+                .size(13)
+                .align(TextAlign.center)
+                .color(Vx.gray500)
+                .make(),
+            20.heightBox,
+            GFButton(
+              shape: GFButtonShape.pills,
+              color: Vx.green700,
+              textColor: Vx.white,
+              fullWidthButton: true,
+              onPressed: () => {Get.offAllNamed(Routes.HOME)},
+              text: "Retour au formulaire de connexion",
+            )
+          ],
+          crossAlignment: CrossAxisAlignment.center,
+          alignment: MainAxisAlignment.center,
+        ),
+      ).card.white.make().marginAll(20).h(Get.height / 10 * 2));
     } catch (e) {
       rethrow;
     } finally {
       loading.value = false;
     }
 
-    Get.dialog(Container(
-      height: Get.height / 10 * 1,
-      padding: const EdgeInsets.all(20),
-      child: VStack(
-        [
-          Lottie.network(
-              "https://lottie.host/f8318bb0-a076-4adb-b2d5-b08d3e86984c/VbyuTssOV6.json",
-              height: 200,
-              width: 200),
-          10.heightBox,
-          "Votre compte est en cours de validation ..."
-              .text
-              .align(TextAlign.center)
-              .make(),
-          "Vous serez notifier à l'activation du compte"
-              .text
-              .size(13)
-              .align(TextAlign.center)
-              .color(Vx.gray500)
-              .make(),
-          20.heightBox,
-          GFButton(
-            shape: GFButtonShape.pills,
-            color: Vx.green700,
-            textColor: Vx.white,
-            fullWidthButton: true,
-            onPressed: () => {Get.offAllNamed(Routes.HOME)},
-            text: "Retour au formulaire de connexion",
-          )
-        ],
-        crossAlignment: CrossAxisAlignment.center,
-        alignment: MainAxisAlignment.center,
-      ),
-    ).card.white.make().marginAll(20).h(Get.height / 10 * 2));
+    
   }
 }

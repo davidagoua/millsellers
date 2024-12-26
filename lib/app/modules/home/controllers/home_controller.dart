@@ -16,8 +16,8 @@ class HomeController extends GetxController {
   final Logger logger = Logger();
 
   final formKey = GlobalKey<FormState>();
-  final contactCtrl = TextEditingController(text:"sikirou@1000vendeurs.academy");
-  final password = TextEditingController(text:"azerty123");
+  final contactCtrl = TextEditingController();
+  final password = TextEditingController();
   final showError = false.obs;
   final showPassword = true.obs;
   final loading = false.obs;

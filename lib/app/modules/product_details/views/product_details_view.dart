@@ -19,20 +19,15 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
           child: const Icon(Icons.close, color: Vx.green500,)
         ).cornerRadius(7).onTap(Get.back),
         actions: [
-          ElevatedButton(
-              onPressed: () => { Get.toNamed(Routes.REAPFORM, arguments: {'product_id': controller.product.value?.id, 'product_name': controller.product.value?.name, 'product_price': controller.product.value?.price})}, // Implement add to cart functionality
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 16,
-                ),
-              ),
-              child: const Text(
-                '+ Stock',
-                style: TextStyle(color: Vx.green700),
-              ),
-            ),
+          '+ Stock'.text.color(Vx.green700).make().onTap(() => Get.toNamed(
+            Routes.REAPFORM, 
+            arguments: {
+              'product_id': controller.product.value?.id, 
+              'product_name': controller.product.value?.name, 
+              'product_price': controller.product.value?.price
+            }
+          )),
+          
         ],
         title: const Text('Details Produit'),
       ),
@@ -214,8 +209,8 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: secondaryColor,
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 16,
+                  horizontal: 20,
+                  vertical: 10,
                 ),
               ),
               child: const Text(

@@ -16,13 +16,13 @@ class RegisterSchemaProvider extends GetConnect {
   }
 
   Future<RegisterSchema?> getRegisterSchema(int id) async {
-    final response = await get('registerschema/$id');
+    final response = await get('register/$id');
     return response.body;
   }
 
   Future<Response<RegisterSchema>> postRegisterSchema(
           RegisterSchema registerschema) async =>
-      await post('https://api.1000vendeurs.academy/api/registerschema', registerschema);
+      await post('https://api.1000vendeurs.academy/api/register', registerschema);
   Future<Response> deleteRegisterSchema(int id) async =>
-      await delete('registerschema/$id');
+      await delete('register/$id');
 }

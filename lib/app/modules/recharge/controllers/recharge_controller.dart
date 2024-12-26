@@ -7,9 +7,10 @@ import 'package:logger/logger.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
 
 class RechargeController extends GetxController {
+  final logger = Logger();
+
   final canalCtrl = TextEditingController();
   final Rx<String> file = "".obs;
-  final logger = Logger();
 
   final formKey = GlobalKey<FormState>();
 
@@ -38,36 +39,41 @@ class RechargeController extends GetxController {
 
   void increment() => count.value++;
 
-  void  submit() async {
-
+  void submit() async {
     AuthController authController = Get.find();
+
+    logger.i(file.value);
 
     var headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer ${authController.getToken()}'
     };
     var data = FormData.fromMap({
-      //'files': [await MultipartFile.fromFile(file.value)],
+      'files': [await MultipartFile.fromFile(file.value)],
       'amount': uniteCtrl.text,
-      'payment[reference]':  referenceCtrl.text,
-      'payment[file]': await MultipartFile.fromFile(file.value)
+      'payment': {
+        'reference': referenceCtrl.text,
+        'file': await MultipartFile.fromFile(file.value)
+      }
     });
 
     var dio = Dio();
     var response = await dio.request(
       'https://api.1000vendeurs.academy/api/seller/recharges',
       options: Options(
-        validateStatus: (v)=> true,
+        validateStatus: (v) => true,
         method: 'POST',
         headers: headers,
       ),
       data: data,
     );
     logger.e(response.data);
-    if (response.statusCode == 200) {
-      Get.snackbar("Demande de rechargement soumise !", "Vous serez notifier d'ici peu !", colorText: Colors.white, backgroundColor: Colors.green[500]);
-    }
-    else {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Get.snackbar("Demande de rechargement soumise !",
+          "Vous serez notifier d'ici peu !",
+          colorText: Colors.green[700], backgroundColor: Colors.green[100]);
+      Get.back();
+    } else {
       logger.e(response.statusMessage);
     }
   }
