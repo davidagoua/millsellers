@@ -158,7 +158,7 @@ class VenteView extends GetView<VenteController> {
             CircleAvatar(child: Icon(Icons.person, size: 15, color: Colors.white,),backgroundColor: secondaryColor,).h(30).w(30),
             10.widthBox,
             Expanded(
-              child: Text('${vente.customer?.name} (${vente.customer?.phone})'),
+              child: Text('${vente.customer?.name}'),
             ),
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

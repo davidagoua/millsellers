@@ -2,28 +2,28 @@ import 'package:millsellers/app/data/models/seller_resource_model.dart';
 
 class Order {
   String? id;
-  String? name, quantity, amount, created_at, updated_at, phone, status;
+  String? name, created_at, updated_at, phone, status;
   Seller? seller;
   Place? place;
+  int? quantity, amount;
 
-  Order({
-    this.id,
-    this.name,
-    this.quantity,
-    this.amount,
-    this.created_at,
-    this.updated_at,
-    this.phone,
-    this.status,
-    this.seller,
-    this.place
-  });
+  Order(
+      {this.id,
+      this.name,
+      this.quantity,
+      this.amount,
+      this.created_at,
+      this.updated_at,
+      this.phone,
+      this.status,
+      this.seller,
+      this.place});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'] as String;
     name = json['name'] as String;
-    quantity = json['quantity'] as String;
-    amount = json['amount'] as String;
+    quantity = json['quantity'] as int;
+    amount = json['amount'] as int;
     created_at = json['created_at'] as String;
     updated_at = json['updated_at'] as String;
     phone = json['phone'] as String;
@@ -40,8 +40,8 @@ class Order {
     final data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['quantity'] = int.parse(quantity!);
-    data['amount'] = amount;
+    data['quantity'] = quantity as int;
+    data['amount'] = amount as int;
     data['created_at'] = created_at;
     data['updated_at'] = updated_at;
     data['phone'] = phone;

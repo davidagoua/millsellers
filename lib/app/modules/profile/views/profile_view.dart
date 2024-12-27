@@ -24,7 +24,7 @@ class ProfileView extends GetView<ProfileController> {
                           color: const Color.fromRGBO(236, 249, 242, 1),
                           child: const Icon(Icons.close, color: Vx.green500,)
                         ).cornerRadius(7).onTap(Get.back),
-                        Expanded(child: "Profile utilisateur".text.color(const Color.fromRGBO(41, 156, 22, 1)).size(22).make().centered(),)
+                        Expanded(child: "Profil utilisateur".text.color(const Color.fromRGBO(41, 156, 22, 1)).size(22).make().centered(),)
                       ], alignment: MainAxisAlignment.start,).w(double.maxFinite),
                       
                       
@@ -82,11 +82,11 @@ class ProfileView extends GetView<ProfileController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildStatItem('Ventes', '${controller.scans}/750'),
+                    _buildStatItem('Ventes', '${controller.scans}'),
                     _buildDivider(),
-                    _buildStatItem('Fieuls', '${controller.users}/6'),
+                    _buildStatItem('Fieuls', '${controller.users}'),
                     _buildDivider(),
-                    _buildStatItem('Codes', '${controller.codes}/2500'),
+                    _buildStatItem('Rang', '${controller.codes}eme'),
                   ],
                 ),
                 const SizedBox(height: 32),

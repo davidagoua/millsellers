@@ -48,11 +48,12 @@ class CommandeListController extends GetxController {
         headers: headers,
       ),
     );
-    logger.i(response.statusCode);
-    logger.i(response.data);
+    logger.i(response.data['data']);
+    orders.value = (response.data['data'] as List).map((data) => Order.fromJson(data)).toList();
+    
     if (response.statusCode == 200) {
-
-      orders.value = (response.data['data'] as List).map((data) => Order.fromJson(data)).toList();
+    
+      
     }
     else {
       print(response.statusMessage);

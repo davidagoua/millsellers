@@ -250,6 +250,33 @@ class ResumeView extends GetView<ResumeController> {
                     ),
                     
             ),
+            7.heightBox,
+            InkWell(
+              child: Container(
+                width: double.maxFinite,
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: const Color.fromRGBO(236, 249, 242, 1)),
+                child: HStack(
+                  [
+                    Image.asset(
+                      "assets/images/reap.png",
+                      height: 19,
+                    ),
+                    "Devenir premium".text.size(14).make(),
+                    const Icon(
+                      Icons.arrow_right_alt_rounded,
+                      color: Vx.green700,
+                    )
+                  ],
+                  alignment: MainAxisAlignment.spaceBetween,
+                ),
+              ),
+            
+                onTap: () => {},
+                    
+            ),
             20.heightBox,
             getProductsWidget(context),
             20.heightBox,

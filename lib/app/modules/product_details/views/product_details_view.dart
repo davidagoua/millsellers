@@ -136,7 +136,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     tabs: [
                       Tab(text: 'Description'),
                       Tab(text: 'Specification'),
-                      Tab(text: 'Avis'),
+                      Tab(text: "Précaution d'emploi"),
                     ],
                   ),
                   SizedBox(

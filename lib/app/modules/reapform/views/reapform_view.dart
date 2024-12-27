@@ -128,35 +128,6 @@ class ReapformView extends GetView<ReapformController> {
                     ),
                   ).cornerRadius(15)
                 ]),
-                20.heightBox,
-                VStack([
-                  "Taille Tshirt".text.align(TextAlign.left).make(),
-                  5.heightBox,
-                  InputWrapperView(
-                    child: DropdownButtonFormField(
-                      isExpanded: false,
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      borderRadius: BorderRadius.circular(5),
-                      decoration: const InputDecoration(
-                          fillColor: Color.fromRGBO(243, 243, 243, 1),
-                          border: InputBorder.none
-                      ),
-                      isDense: true,
-                      items: [
-                        "S",
-                        "M",
-                        "L",
-                        "XL",
-                        "XXL",
-                      ].map((String value)=> DropdownMenuItem(value: value, child: value.text.make(),)).toList(),
-                      onChanged: (item)=>{
-                        controller.shopSizeCtrl.text = item ?? "SM"
-                      },
-
-
-                    ),
-                  ),
-                ]),
                 10.heightBox,
                 HStack([
                   VStack([

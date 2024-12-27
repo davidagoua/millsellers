@@ -41,7 +41,7 @@ class RechargeController extends GetxController {
 
   void submit() async {
     AuthController authController = Get.find();
-
+    loading.value = true;
     logger.i(file.value);
 
     var headers = {
@@ -74,7 +74,10 @@ class RechargeController extends GetxController {
           colorText: Colors.green[700], backgroundColor: Colors.green[100]);
       Get.back();
     } else {
+      Get.snackbar("Erreur","${response.data['message']}", colorText: Colors.red[700], backgroundColor: Colors.red[100]);
       logger.e(response.statusMessage);
     }
+
+    loading.value = false;
   }
 }

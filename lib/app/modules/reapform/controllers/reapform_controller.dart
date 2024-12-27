@@ -77,7 +77,7 @@ class ReapformController extends GetxController {
         Get.to(() => const ReapformSuccessView());
       }
       else {
-        log.e(response.statusMessage);
+        log.e(response.statusCode);
         Get.snackbar("Désolé !", response.data['message'], colorText: Colors.white, backgroundColor: Colors.red[500]);
       }
     }
