@@ -24,6 +24,7 @@ class HomeView extends GetView<HomeController> {
         builder: (context) =>
             SafeArea(
               child: VStack([
+                /* 
                 HStack([
                   Container(
                     alignment: Alignment.center,
@@ -51,8 +52,14 @@ class HomeView extends GetView<HomeController> {
                       .make()
                       .onTap(() => showBottomSheet(context))
                 ], alignment: MainAxisAlignment.spaceBetween,).p(5),
-                30.heightBox,
+                
+                */
+                
+                
                 VStack([
+
+                  Image.asset("assets/images/logo.png",),
+
                   FadeIn(
                       child: Container(
                         alignment: Alignment.center,
@@ -85,7 +92,7 @@ class HomeView extends GetView<HomeController> {
                         .roundedLg
                         .make()),
                   ])),
-                  40.heightBox,
+                  30.heightBox,
                   FadeInUp(child: GFButton(
                     size: GFSize.LARGE,
                     onPressed: () {
@@ -93,8 +100,17 @@ class HomeView extends GetView<HomeController> {
                     },
                     blockButton: true,
                     shape: GFButtonShape.pills,
-                    color: const Color.fromRGBO(41, 156, 22, 1),
+                    color: const Color.fromRGBO(255, 118, 26, 1),
                     child: "Rejoindre la communauté".text.make(),
+                  )),
+                  10.heightBox,
+                  FadeInUp(child: GFButton(
+                    size: GFSize.LARGE,
+                    onPressed: () => showBottomSheet(context),
+                    blockButton: true,
+                    shape: GFButtonShape.pills,
+                    color: const Color.fromRGBO(41, 156, 22, 1),
+                    child: "Se connecter".text.make(),
                   )),
                   5.heightBox,
                   "Termes et conditions".text
@@ -102,11 +118,12 @@ class HomeView extends GetView<HomeController> {
                       .underline
                       .textStyle(const TextStyle(decorationColor: Colors.green))
                       .make(),
+                      //.onTap(() => Share)
                   20.heightBox,
                 ], alignment: MainAxisAlignment.end,
                   crossAlignment: CrossAxisAlignment.center,)
               ]),
-            ),
+            ).scrollVertical(),
       ),
     );
   }
@@ -192,6 +209,7 @@ class HomeView extends GetView<HomeController> {
               ]),
               15.heightBox,
               GFButton(
+                
                 size: GFSize.LARGE,
                 onPressed: () {
                   controller.submit();

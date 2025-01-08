@@ -5,6 +5,11 @@ import 'package:millsellers/app/controllers/auth_controller.dart';
 import 'package:millsellers/app/data/models/sale_model.dart';
 import 'package:millsellers/app/data/models/seller_resource_model.dart';
 import 'package:millsellers/utils/contants.dart';
+import 'package:logger/logger.dart';
+
+
+
+final logger = Logger();
 
 class VenteController extends GetxController {
 
@@ -51,7 +56,7 @@ class VenteController extends GetxController {
     );
 
     print("headers: ${response.requestOptions.headers}");
-
+    
     if (response.statusCode == 200) {
       
       sales.value = (response.data['data'] as List).map((data) => Sale.fromJson(data)).toList();

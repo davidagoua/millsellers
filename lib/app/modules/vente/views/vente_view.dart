@@ -3,7 +3,9 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:get/get.dart';
 import 'package:millsellers/app/data/models/sale_model.dart';
 import 'package:millsellers/utils/contants.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:ionicons/ionicons.dart';
 
 import '../controllers/vente_controller.dart';
 
@@ -41,8 +43,8 @@ class VenteView extends GetView<VenteController> {
           ).w(double.maxFinite),
           10.heightBox,
 
-          searchAndFilterWidget(),
-          20.heightBox,
+          //searchAndFilterWidget(),
+          //20.heightBox,
 
           Obx(() => controller.sales.isNotEmpty
               ? Expanded(
@@ -67,7 +69,7 @@ class VenteView extends GetView<VenteController> {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: primaryColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -78,111 +80,111 @@ class VenteView extends GetView<VenteController> {
           ),
         ],
       ),
-      child: IntrinsicHeight(
-        child: VStack([
-          Row(
-            children: [
-              // Date box
-              Container(
-                width: 60,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    vente.product?.images?.isNotEmpty ?? false
-                    ? Image.network(
-                        vente.product!.images!.first['link'] ?? '',
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.image),
-                      )
-                    : const Icon(Icons.image),
-                  ],
-                ),
-              ).p12(),
-              
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${vente.product?.name}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time, size: 16, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${DateTime.parse(vente.created_at!).day}-${DateTime.parse(vente.created_at!).month}-${DateTime.parse(vente.created_at!).year}',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on, size: 16, color: Colors.grey),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${vente.customer?.place?.address}, ${vente.customer?.place?.city}, ${vente.customer?.place?.country}',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+      child: VStack([
+        // Header Section
+        HStack([
+          CircleAvatar(
+            backgroundImage: AssetImage("assets/images/profile.png"),
+            radius: 20,
+          ),
+          10.widthBox,
+          Text(
+            '${vente.customer?.name}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Spacer(),
+          Icon(Icons.phone, color: Colors.green).onTap(()=> launchUrl(Uri.parse('tel://${vente.customer?.phone}'))),
+          10.widthBox,
+          Container(child: Icon(Ionicons.logo_whatsapp, color: Colors.green)
+            .onTap(()=> launchUrl(Uri.parse('https://wa.me/${vente.customer?.phone}')))
+            ).card.p3.make(),
+        ]).p12().color(primaryColor),
+
+        
+
+        // Package Information
+        Container(
+          child: VStack([
+            HStack([
+              Text(
+                vente.product?.name ?? '',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              
-              
-            ],
-          ),
+              Spacer(),
+              Text(
+                ' x ${vente.quantity}',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ]).p12().color(Vx.white),
 
-          HStack([
-            CircleAvatar(child: Icon(Icons.person, size: 15, color: Colors.white,),backgroundColor: secondaryColor,).h(30).w(30),
-            10.widthBox,
-            Expanded(
-              child: Text('${vente.customer?.name}'),
-            ),
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  '${(vente.amount! * vente.quantity!).toString().numCurrency} FCFA',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+          
+
+            // Order Process
+            VStack([
+              Container(
+                child: Row(
+                  children: [
+                    Icon(Icons.access_time, size: 16, color: Colors.grey),
+                    10.widthBox,
+                    Text(
+                      'Date de vente',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    Spacer(),
+                    Text(
+                      '${DateTime.parse(vente.created_at!).day} ${month} ${DateTime.parse(vente.created_at!).year}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ).p12()
+              ),
+              Row(
+                children: [
+                  Icon(Icons.location_on, size: 16, color: Colors.grey),
+                  10.widthBox,
+                  Text(
+                    'Destination',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
+                  Spacer(),
+                  Text(
+                    '${vente.customer?.place?.country}, ${vente.customer?.place?.city}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ).p12(),
-          ]).p(2)
-        ]),
-      ),
+            ]),
+          ]),
+        ).card.white.make()
+      ]),
     );
   }
 
   String _getMonthName(int month) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
     ];
     return months[month - 1];
   }

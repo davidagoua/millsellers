@@ -57,7 +57,7 @@ class OffpaymentController extends GetxController {
         },
         "password": "${registerSchema?.sellerPassword}",
         "email": registerSchema?.sellerEmail,
-        "referral_id": registerSchema?.sellerReferalId
+        "referral_code": registerSchema?.sellerReferalId
       },
       'payment': {
         "reference": referenceCtrl.text,

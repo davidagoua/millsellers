@@ -6,6 +6,8 @@ class Order {
   Seller? seller;
   Place? place;
   int? quantity, amount;
+  Map<String, dynamic>? products;
+  String? product_name;
 
   Order(
       {this.id,
@@ -17,6 +19,8 @@ class Order {
       this.phone,
       this.status,
       this.seller,
+      this.products,
+      this.product_name,
       this.place});
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -28,6 +32,8 @@ class Order {
     updated_at = json['updated_at'] as String;
     phone = json['phone'] as String;
     status = json['status'] as String;
+    product_name = json['product']['name'] as String;
+    products = json['product'] as Map<String, dynamic>;
     if (json['seller'] != null) {
       seller = Seller.fromJson(json['seller']);
     }
@@ -46,6 +52,7 @@ class Order {
     data['updated_at'] = updated_at;
     data['phone'] = phone;
     data['status'] = status;
+    data['product'] = products;
     if (seller != null) {
       data['seller'] = seller?.toJson();
     }

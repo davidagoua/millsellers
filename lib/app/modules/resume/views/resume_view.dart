@@ -1,15 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:logger/logger.dart';
+
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:millsellers/app/modules/resume/views/get_premium_view.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
 import 'package:millsellers/app/views/views/input_wrapper_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:millsellers/app/data/models/product_model.dart';
 import '../controllers/resume_controller.dart';
+import 'package:ionicons/ionicons.dart';
 
 class ResumeView extends GetView<ResumeController> {
   const ResumeView({super.key});
@@ -35,18 +37,26 @@ class ResumeView extends GetView<ResumeController> {
                       .make()
                       .onTap(Scaffold.of(context).openDrawer)),
               BounceInRight(
-                  child: Image.asset(
-                "assets/images/avatar.png",
-                height: 50,
-              )).onTap(() {
-                
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.orange,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Image.asset(
+                      "assets/images/avatar.png",
+                      height: 50,
+                    ),
+                  )).onTap(() {
                 Get.toNamed(Routes.PROFILE);
               }),
             ],
             alignment: MainAxisAlignment.spaceBetween,
             crossAlignment: CrossAxisAlignment.center,
           ).w(double.maxFinite),
-        ]).p(15),
+        ]).px(15).py(7),
       ),
       Expanded(
         child: LiquidPullToRefresh(
@@ -56,27 +66,23 @@ class ResumeView extends GetView<ResumeController> {
           onRefresh: controller.refresh,
           child: VStack([
             VStack([
-              "${controller.iresource.seller?.name}"
-                  .text
-                  .size(18)
-                  .bold
-                  .make(),
+              "${controller.iresource.seller?.name}".text.size(18).bold.make(),
               "Bienvenue dans 1000 Vendeurs".text.size(18).gray500.make(),
             ]).px(10),
-            10.heightBox,
+          
             FadeIn(
               child: HStack(
                 [
                   VStack([
-                        "Solde 1000 Vendeurs".text.size(16).make(),
-                        "Compte Principale".text.size(12).gray500.make(),
-                        5.heightBox,
-                        Obx(()=>"${controller.balance.value?.numCurrency} XOF"
-                            .text
-                            .size(21)
-                            .bold
-                            .make()),
-                      ]),
+                    "Solde 1000 Vendeurs".text.size(16).make(),
+                    "Compte Principale".text.size(12).gray500.make(),
+                    5.heightBox,
+                    Obx(() => "${controller.balance.value?.numCurrency} XOF"
+                        .text
+                        .size(21)
+                        .bold
+                        .make()),
+                  ]),
                   VStack(
                     [
                       Container(
@@ -96,7 +102,7 @@ class ResumeView extends GetView<ResumeController> {
                       Image.asset(
                         "assets/images/wallet_icon.png",
                         height: 67,
-                      )
+                      ).onTap(showBottomSheet)
                     ],
                     alignment: MainAxisAlignment.spaceBetween,
                     crossAlignment: CrossAxisAlignment.center,
@@ -150,21 +156,21 @@ class ResumeView extends GetView<ResumeController> {
                   child: HStack(
                     [
                       Image.asset(
-                        "assets/images/metric_icon.png",
-                        height: 50,
+                        "assets/images/casino.jpg",
+                        height: 45,
                       ),
                       15.widthBox,
                       Obx(() => VStack([
-                            "${controller.resource.value.stock ?? 0}"
+                            "${controller.iresource.wallets!['bonus'] ?? 0}  XOF"
                                 .text
                                 .size(18)
                                 .make(),
-                            "En stock".text.size(12).make()
+                            "Prime".text.size(12).make()
                           ]))
                     ],
                     crossAlignment: CrossAxisAlignment.center,
                   ),
-                ).onTap(() => controller.resource.value.setStock()),
+                ),
                 Container(
                   padding: const EdgeInsets.all(10),
                   width: Get.width / 12 * 5.2,
@@ -241,14 +247,11 @@ class ResumeView extends GetView<ResumeController> {
                   alignment: MainAxisAlignment.spaceBetween,
                 ),
               ),
-            
-                onTap: () async => await Share.share(
-                    "Debuter plus facilement ave l'application 100 vendeurs en vous inscrivant avec le code de parrainage suivant ${controller.resource?.value.referral}",
-                    
-                    subject:
+              onTap: () async => await Share.share(
+                "Debuter plus facilement ave l'application 100 vendeurs en vous inscrivant avec le code de parrainage suivant ${controller.resource.value.seller?.code}",
+                subject:
                     'Debuter plus facilement ave l\'application 100 vendeurs https://example.com',
-                    ),
-                    
+              ),
             ),
             7.heightBox,
             InkWell(
@@ -260,11 +263,12 @@ class ResumeView extends GetView<ResumeController> {
                     color: const Color.fromRGBO(236, 249, 242, 1)),
                 child: HStack(
                   [
-                    Image.asset(
-                      "assets/images/reap.png",
-                      height: 19,
+                    Icon(
+                      Ionicons.star_outline,
+                      color: Vx.green700,
+                      size: 19,
                     ),
-                    "Devenir premium".text.size(14).make(),
+                    "Devenir premium ".text.size(14).make(),
                     const Icon(
                       Icons.arrow_right_alt_rounded,
                       color: Vx.green700,
@@ -273,10 +277,8 @@ class ResumeView extends GetView<ResumeController> {
                   alignment: MainAxisAlignment.spaceBetween,
                 ),
               ),
-            
-                onTap: () => {},
-                    
-            ),
+              onTap: () => {Get.to(GetPremiumView())},
+            ).hide(isVisible: !controller.resource.value.is_premium! && !controller.resource.value.is_pro!),
             20.heightBox,
             getProductsWidget(context),
             20.heightBox,
@@ -349,23 +351,75 @@ class ResumeView extends GetView<ResumeController> {
     return VStack([
       "Challenges en cours".text.bold.size(17).make(),
       10.heightBox,
+
+      FutureBuilder<List<dynamic>?>(
+        future: controller.getChallenges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(color: Vx.green700).centered();
+          } else if (snapshot.hasData) {
+            return HStack(
+              snapshot.data!
+                  .map((challenge) => challengeWidget(challenge))
+                  .toList(),
+            ).scrollHorizontal();
+          } else if (snapshot.hasError) {
+            return "Aucun challenge en cours".text.size(14).make().centered();
+          } else {
+            return const CircularProgressIndicator(color: Vx.green700).centered();
+          }
+        },
+      )
+      /*
       HStack([
         SizedBox(
           width: Get.width / 12 * 5,
           height: 200,
           child: VStack([]).card.white.elevation(0).make(),
-        ).card.color(const Color.fromRGBO(236, 249, 242, 1)).make()
-      ]).scrollHorizontal(),
+        ).card.color(const Color.fromARGB(255, 9, 9, 9)).make()
+      ]).scrollHorizontal(), */
     ]).p(10);
+  }
+
+  Widget challengeWidget(dynamic challenge) {
+    return InkWell(
+      child: SizedBox(
+        width: Get.width / 12 * 5,
+        height: 200,
+        child: VStack(
+          [
+            Image.network(
+              challenge['image'] ?? '',
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.image),
+            ),
+            HStack(
+              [
+                "${challenge['title']}".text.bold.make(),
+              ],
+              alignment: MainAxisAlignment.center,
+            ).w(double.maxFinite),
+            "${challenge['description']}".text.make(),
+            2.heightBox,
+            "${ DateTime.parse(challenge['start_date'])} - ${ DateTime.parse(challenge['end_date'])}".text.gray500.make()
+          ],
+          alignment: MainAxisAlignment.center,
+          crossAlignment: CrossAxisAlignment.center,
+        ),
+      ).card.white.make(),
+      onTap: () => {},
+    );
   }
 
   Widget getProductsWidget(BuildContext context) {
     return VStack([
-      "Principals produits".text.bold.size(17).make(),
+      "Produits".text.bold.size(17).make(),
       10.heightBox,
       Obx(() => controller.products.isEmpty
-          ? const CircularProgressIndicator(color: Vx.green700)
-                          .centered()
+          ? const CircularProgressIndicator(color: Vx.green700).centered()
           : HStack(
               controller.productLoading.value
                   ? [
@@ -384,22 +438,33 @@ class ResumeView extends GetView<ResumeController> {
       child: SizedBox(
         width: Get.width / 12 * 5,
         height: 200,
-        child: VStack([
-          product.images?.isNotEmpty ?? false
-            ? Image.network(
-                product.images!.first['link'] ?? '',
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.image),
-              )
-            : const Icon(Icons.image),
-          "${product.name}".text.bold.make(),
-          "${product.quantity}".text.make(),
-        ], alignment: MainAxisAlignment.center, crossAlignment: CrossAxisAlignment.center,),
+        child: VStack(
+          [
+            product.images?.isNotEmpty ?? false
+                ? Image.network(
+                    product.images!.first['link'] ?? '',
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.image),
+                  )
+                : const Icon(Icons.image),
+            HStack([
+              "${product.name}".text.bold.make(),
+            
+            ], alignment: MainAxisAlignment.center,).w(double.maxFinite),
+
+            "${(product.price).toString().numCurrency} FCFA".text.bold.make(),
+
+           "Mon stock ${product.stock}".text.make(),
+          ],
+          alignment: MainAxisAlignment.center,
+          crossAlignment: CrossAxisAlignment.center,
+        ),
       ).card.white.make(),
-     onTap: () => Get.toNamed(Routes.PRODUCT_DETAILS, arguments: {'product': product}),
+      onTap: () =>
+          Get.toNamed(Routes.PRODUCT_DETAILS, arguments: {'product': product}),
     );
   }
 }

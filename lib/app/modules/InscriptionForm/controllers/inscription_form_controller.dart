@@ -30,6 +30,7 @@ class InscriptionFormController extends GetxController {
   final shopSizeCtrl = TextEditingController();
   final shopAddresseCtrl = TextEditingController();
   final countries = [].obs;
+  final gender = 'male'.obs;
 
   var  genre = "";
 
@@ -62,7 +63,7 @@ class InscriptionFormController extends GetxController {
       RegisterSchema registerSchema =  RegisterSchema(
         packId: pack_id,
         sellerEmail: emailCtrl.text,
-        sellerGender: 'male',
+        sellerGender: gender.value,
         sellerName: nomCtrl.text,
         sellerPassword: passwordCtrl.text,
         sellerPhone: contactCtrl.text,

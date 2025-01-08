@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../controllers/profile_controller.dart';
 import 'package:millsellers/utils/contants.dart';
@@ -42,55 +44,55 @@ class ProfileView extends GetView<ProfileController> {
                             backgroundColor: Colors.grey[200],
                             backgroundImage: const AssetImage('assets/images/avatar.png'),
                           ),
-                          Positioned(
+                           Obx(() => Positioned(
                             bottom: 0,
                             right: 0,
                             child: Container(
                               width: 30,
                               height: 30,
                               decoration: BoxDecoration(
-                                color: secondaryColor,
+                                color: controller.authController.box.read("user")['is_premium'] ? secondaryColor : Colors.grey[400],
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white, width: 2),
                               ),
                             ),
-                          ),
+                          )),
                         ],
                       ),
                       const SizedBox(height: 16),
                       Obx(() => Text(
-                        controller.username.value,
+                        "${controller.authController.box.read("user")['seller']['name']}",
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       )),
                       const SizedBox(height: 4),
-                      Obx(() => Text(
-                        controller.email.value,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
-                      )),
+                      Obx(() =>  (controller.authController.box.read("user")['is_premium']) 
+                        ? GFButton(
+                          elevation: 0,
+                        onPressed: (){},
+                        text: "Compte Premium",
+                        shape: GFButtonShape.pills,
+                      ) : SizedBox(),),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
 
                 // Stats Row
-                Row(
+                Obx(()=>Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildStatItem('Ventes', '${controller.scans}'),
                     _buildDivider(),
-                    _buildStatItem('Fieuls', '${controller.users}'),
+                    _buildStatItem('Filleuls', '${controller.users}'),
                     _buildDivider(),
                     _buildStatItem('Rang', '${controller.codes}eme'),
                   ],
-                ),
+                )),
                 const SizedBox(height: 32),
-
+                /*
                 // Menu Items
                 _buildMenuItem(
                   icon: Icons.settings,
@@ -107,10 +109,13 @@ class ProfileView extends GetView<ProfileController> {
                   title: 'Gestion du compte',
                   onTap: () {},
                 ),
+                */
                 _buildMenuItem(
                   icon: Icons.info,
-                  title: 'Information',
-                  onTap: () {},
+                  title: 'Contacter le support',
+                  onTap: () {
+                    launchUrl(Uri.parse("mailto:support@1000vendeurs.academy"));
+                  },
                 ),
                 _buildMenuItem(
                   icon: Icons.logout,

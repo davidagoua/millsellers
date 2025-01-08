@@ -52,6 +52,31 @@ class InscriptionFormView extends GetView<InscriptionFormController> {
                 ),
               ).cornerRadius(7)
             ]),
+            15.heightBox,
+            Obx(()=>VStack([
+              "Genre".text.make(),
+              7.heightBox,
+              ListTile(
+                title: Text('Homme'),
+                leading: Radio(
+                  value: 'male',
+                  groupValue: controller.gender.value,
+                  onChanged: (value) {
+                    controller.gender.value = value!;
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text('Femme'),
+                leading: Radio(
+                  value: 'female',
+                  groupValue: controller.gender.value,
+                  onChanged: (value) {
+                    controller.gender.value = value!;
+                  },
+                ),
+              ),
+            ])),
 
             10.heightBox,
             VStack([

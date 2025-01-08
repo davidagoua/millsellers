@@ -53,7 +53,7 @@ class RegisterSchema {
     sllerPlaceCity = json['sller_place_city'];
     sllerPlaceAddress = json['sller_place_address'];
     sellerPassword = json['seller_password'];
-    sellerReferalId = json['seller_referal_id'];
+    sellerReferalId = json['seller_referal_code'];
     paymentReference = json['payment_reference'];
     paymentFile = json['payment_file'];
     shopPhone = json['shop_phone'];
@@ -76,7 +76,7 @@ class RegisterSchema {
     data['seller.place.city'] = sllerPlaceCity;
     data['seller.place.address'] = sllerPlaceAddress;
     data['seller.password'] = sellerPassword;
-    data['seller.referal_id'] = sellerReferalId;
+    data['seller.referal_code'] = sellerReferalId;
     data['payment.reference'] = paymentReference;
     data['payment.file'] = paymentFile;
     data['shop.phone'] = shopPhone;

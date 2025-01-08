@@ -3,10 +3,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:millsellers/app/data/models/user.dart';
 import 'package:logger/logger.dart';
 
+final logger = Logger();
+
 class AuthController extends GetxController {
-
-  final logger = Logger();
-
   final isLogged = false.obs;
   final box = GetStorage();
   final Rx<User?> _user = Rx<User?>(null);
@@ -15,13 +14,15 @@ class AuthController extends GetxController {
 
   void logOut() {
     isLogged.value = false;
+    GetStorage().erase();
     removeToken();
   }
 
   void login(String? token) async {
     isLogged.value = true;
-    
+
     await saveToken(token);
+    logger.w(await GetStorage().read("user"));
     final user = User.fromJson(GetStorage().read("user"));
     this._user.value = user;
   }
@@ -37,7 +38,7 @@ class AuthController extends GetxController {
     box.erase();
   }
 
-  String? getToken(){
+  String? getToken() {
     return box.read('auth_token');
   }
 
@@ -47,7 +48,7 @@ class AuthController extends GetxController {
   }
 
   bool isOnBoard() {
-    print("isOnBoard: ${box.read("isOnBoard")}" );
+    print("isOnBoard: ${box.read("isOnBoard")}");
     return box.read("isOnBoard") ?? false;
   }
 }

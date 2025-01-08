@@ -5,7 +5,6 @@ import 'package:millsellers/app/data/models/sale_model.dart';
 import 'package:millsellers/utils/contants.dart';
 import 'package:logger/logger.dart';
 
-
 final logger = Logger();
 
 class SellerResource {
@@ -20,6 +19,10 @@ class SellerResource {
   Shop? shop;
   int? ventes;
   List<Sale>? sales;
+  bool? is_pro;
+  bool? is_premium;
+  int? invitees_count, customers_count;
+  Map<String, dynamic>? wallets;
 
   SellerResource(
       {this.customers,
@@ -30,9 +33,18 @@ class SellerResource {
       this.isAccountEnable,
       this.seller,
       this.referral,
-      this.shop, this.sales, this.ventes});
+      this.shop,
+      this.sales,
+      this.ventes,
+      this.is_pro,
+      this.is_premium,
+      this.invitees_count,
+      this.customers_count,
+      this.wallets});
 
   SellerResource.fromJson(Map<String, dynamic> json) {
+    logger.d(json);
+
     customers = json['customers'];
     invitees = json['invitees'];
     isPremium = json['is_premium'];
@@ -43,6 +55,11 @@ class SellerResource {
     referral =
         json['referral'] != null ? Referral?.fromJson(json['referral']) : null;
     shop = json['shop'] != null ? Shop?.fromJson(json['shop']) : null;
+    is_pro = json['is_pro'];
+    is_premium = json['is_premium'];
+    invitees_count = json['invitees'];
+    customers_count = json['customers'];
+    wallets = json['wallets'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +70,10 @@ class SellerResource {
     data['stock'] = stock;
     data['balance'] = balance;
     data['is_account_enable'] = isAccountEnable;
+    data['is_pro'] = is_pro;
+    data['is_premium'] = is_premium;
+    data['invitees'] = invitees_count;
+    data['customers'] = customers_count;
     if (seller != null) {
       data['seller'] = seller?.toJson();
     }
@@ -62,44 +83,38 @@ class SellerResource {
     if (shop != null) {
       data['shop'] = shop?.toJson();
     }
+    data['wallets'] = wallets;
     return data;
   }
 
   Future<int?> setSolde() async {
     final authManager = Get.find<AuthController>();
 
+    var headers = {
+      "Content-Type": "application/json",
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${authManager.getToken()}',
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      BASE_URL + '/seller/wallet',
+      options: Options(
+          method: 'GET', headers: headers, validateStatus: (value) => true),
+    );
 
-      var headers = {
-        "Content-Type":"application/json",
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${authManager.getToken()}',
-      };
-      var dio = Dio();
-      var response = await dio.request(
-        BASE_URL + '/seller/wallet',
-        options: Options(
-          method: 'GET',
-          headers: headers,
-          validateStatus: (value)=> true
-        ),
-      );
-
-      
-
-      if (response.statusCode == 200) {
-        balance = response.data['balance'];
-      }else {
-        print(response.statusMessage);
-      }
-      return balance;
+    if (response.statusCode == 200) {
+      balance = response.data['balance'];
+    } else {
+      print(response.statusMessage);
+    }
+    return balance;
   }
 
   Future<int?> setStock() async {
     final authManager = Get.find<AuthController>();
 
-
     var headers = {
-      "Content-Type":"application/json",
+      "Content-Type": "application/json",
       'Accept': 'application/json',
       'Authorization': 'Bearer ${authManager.getToken()}',
     };
@@ -107,17 +122,14 @@ class SellerResource {
     var response = await dio.request(
       BASE_URL + '/seller/stock',
       options: Options(
-          method: 'GET',
-          headers: headers,
-          validateStatus: (value)=> true
-      ),
+          method: 'GET', headers: headers, validateStatus: (value) => true),
     );
-    
+
     if (response.statusCode == 200) {
       stock = response.data['stock'];
-      
+
       print("stock $stock");
-    }else {
+    } else {
       print(response.statusMessage);
     }
 
@@ -128,7 +140,7 @@ class SellerResource {
     final authManager = Get.find<AuthController>();
 
     var headers = {
-      "Content-Type":"application/json",
+      "Content-Type": "application/json",
       'Accept': 'application/json',
       'Authorization': 'Bearer ${authManager.getToken()}',
     };
@@ -136,16 +148,15 @@ class SellerResource {
     var response = await dio.request(
       BASE_URL + '/seller/sales',
       options: Options(
-          method: 'GET',
-          headers: headers,
-          validateStatus: (value)=> true
-      ),
+          method: 'GET', headers: headers, validateStatus: (value) => true),
     );
     print("headers: ${response.requestOptions.headers}");
     if (response.statusCode == 200) {
-      sales = (response.data['data'] as List).map((data) => Sale.fromJson(data)).toList();
+      sales = (response.data['data'] as List)
+          .map((data) => Sale.fromJson(data))
+          .toList();
       ventes = response.data['meta']['total'];
-    }else {
+    } else {
       print(response.statusMessage);
     }
   }

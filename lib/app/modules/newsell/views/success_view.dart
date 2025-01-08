@@ -70,61 +70,7 @@ class SuccessView extends GetView<NewsellController> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // Action Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Handle share receipt
-                        },
-                        icon: const Icon(
-                          Icons.share_outlined,
-                          color: Color(0xFF199E46),
-                        ),
-                        label: const Text(
-                          'Partager le recu',
-                          style: TextStyle(
-                            color: Color(0xFF199E46),
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          side: const BorderSide(color: Color(0xFF199E46)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Handle add to favorite
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          color: Color(0xFF199E46),
-                        ),
-                        label: const Text(
-                          'Add to Favorite',
-                          style: TextStyle(
-                            color: Color(0xFF199E46),
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          side: const BorderSide(color: Color(0xFF199E46)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
+                
                 // Transaction Details Card
                 Container(
                   width: double.infinity,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../controllers/reapform_controller.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
@@ -70,7 +69,7 @@ class ReapformSuccessView extends GetView<ReapformController> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Votre demande de réapprovisionnement a été envoyée avec succès',
+                  'Votre demande de reapprovisionnement a été envoyée avec succès',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[600],
@@ -78,61 +77,8 @@ class ReapformSuccessView extends GetView<ReapformController> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
-                // Action Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Handle share receipt
-                        },
-                        icon: const Icon(
-                          Icons.share_outlined,
-                          color: Color(0xFF199E46),
-                        ),
-                        label: const Text(
-                          'Partager',
-                          style: TextStyle(
-                            color: Color(0xFF199E46),
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          side: const BorderSide(color: Color(0xFF199E46)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () {
-                          // Handle add to favorite
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          color: Color(0xFF199E46),
-                        ),
-                        label: const Text(
-                          'Nouvelle demande',
-                          style: TextStyle(
-                            color: Color(0xFF199E46),
-                          ),
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          side: const BorderSide(color: Color(0xFF199E46)),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
+                
+                
                 // Transaction Details Card
                 Container(
                   width: double.infinity,
@@ -214,18 +160,27 @@ class ReapformSuccessView extends GetView<ReapformController> {
                   ),
                 ),
                 15.heightBox,
-                GFButton(
-                  color: const Color(0xFF199E46),
-                  text: "Revenir à l'acceuil",
-                  icon: const Icon(Icons.home, color: Colors.white,),
-                  shape: GFButtonShape.pills,
-                  size: GFSize.LARGE,
-                  fullWidthButton: true,
-                  blockButton: true,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  onPressed: () => Get.offAllNamed(Routes.INDEX)
-                )
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF199E46),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () => Get.offAllNamed(Routes.INDEX),
+                    child: const Text(
+                      'Retour à l\'accueil',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

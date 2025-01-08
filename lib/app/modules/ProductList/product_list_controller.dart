@@ -4,9 +4,13 @@ import 'package:millsellers/app/routes/app_pages.dart';
 import '../../data/models/product_model.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
 import 'package:millsellers/utils/contants.dart';
+import 'package:logger/logger.dart';
 
+final logger = Logger();
 
 class ProductListController extends GetxController {
+
+
   var authManager = Get.find<AuthController>();
   final products = <Product>[].obs;
   final isLoading = false.obs;
@@ -20,8 +24,7 @@ class ProductListController extends GetxController {
     next_route.value = Get.arguments?['next_route'] ?? Routes.NEWSELL;
   }
 
-  
-   @override
+  @override
   void onReady() {
     super.onReady();
   }
@@ -30,7 +33,6 @@ class ProductListController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 
   Future<void> fetchProduct() async {
     try {
@@ -46,21 +48,16 @@ class ProductListController extends GetxController {
 
       // Appel API pour récupérer les produits
       final response = await dio.get(
-        '${BASE_URL}/products',
+        '${BASE_URL}/seller/products',
         options: options,
       );
-
+      logger.i(response.data);
       if (response.statusCode == 200) {
-        final List<dynamic> productsJson = response.data['data'];
-
-        // Conversion des données JSON en objets Product
-        products.value = productsJson
-            .map((json) => Product.fromJson(json))
+        products.value = (response.data['data'] as List)
+            .map((data) => Product.fromJson(data))
             .toList();
       }
-    } catch (e, t) {
-      print('Erreur lors de la récupération des produits: $t');
-      print('Erreur lors de la récupération des produits: $e');
+    } catch (e) {
       Get.snackbar(
         'Erreur',
         'Impossible de récupérer les produits',

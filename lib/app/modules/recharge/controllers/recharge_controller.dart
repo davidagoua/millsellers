@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:logger/logger.dart';
 import 'package:millsellers/app/controllers/auth_controller.dart';
+import 'package:millsellers/app/modules/recharge/views/success_view.dart';
 
 class RechargeController extends GetxController {
   final logger = Logger();
@@ -67,14 +68,17 @@ class RechargeController extends GetxController {
       ),
       data: data,
     );
-    logger.e(response.data);
+    logger.e(response.statusCode);
+    logger.e(response.statusMessage);
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.snackbar("Demande de rechargement soumise !",
           "Vous serez notifier d'ici peu !",
           colorText: Colors.green[700], backgroundColor: Colors.green[100]);
       Get.back();
+      Get.to(() => RechargeSuccessView());
     } else {
-      Get.snackbar("Erreur","${response.data['message']}", colorText: Colors.red[700], backgroundColor: Colors.red[100]);
+      Get.snackbar("Erreur", "${response.data['message']}",
+          colorText: Colors.red[700], backgroundColor: Colors.red[100]);
       logger.e(response.statusMessage);
     }
 

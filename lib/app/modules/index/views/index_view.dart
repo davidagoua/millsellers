@@ -14,6 +14,8 @@ import 'package:millsellers/app/modules/vente/views/vente_view.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 import '../controllers/index_controller.dart';
 
 class IndexView extends GetView<IndexController> {
@@ -63,14 +65,15 @@ class IndexView extends GetView<IndexController> {
                     hoverColor: Colors.grey[400],
                     selectedColor: Colors.green[200],
                     leading: const Icon(
-                      FontAwesomeIcons.bell,
+                      FontAwesomeIcons.book,
                       size: 15,
                       color: Color.fromRGBO(25, 158, 70, 1),
                     ),
-                    title: "informations"
+                    title: "Nos Formations"
                         .text
                         .color(const Color.fromRGBO(25, 158, 70, 1))
-                        .make(),
+                        .make()
+                        .onTap(()=> launchUrl(Uri.parse("https://1000vendeurs.academy/"))),
                   ),
                   const Spacer(),
                   ListTile(
@@ -168,8 +171,8 @@ class IndexView extends GetView<IndexController> {
                   IconButton(
                     icon: FaIcon(
                       controller.index.value == 3
-                          ? Ionicons.person
-                          : Ionicons.person_outline,
+                          ? Ionicons.git_network
+                          : Ionicons.git_network_outline,
                     ),
                     onPressed: () => controller.index.value = 3,
                   ),

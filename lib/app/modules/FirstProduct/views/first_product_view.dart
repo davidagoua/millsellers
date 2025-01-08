@@ -59,8 +59,8 @@ class FirstProductView extends GetView<FirstProductController> {
 
                       slidersColors: const [Color.fromRGBO(222, 239, 224, 1)],
                       children: [
-                        Text('Particulier', style: TextStyle(color: Colors.green[800]),),
-                        Text('Boutique', style: TextStyle(color: Colors.green[800])),
+                        Text('Revendeur', style: TextStyle(color: Colors.green[800]),),
+                        Text('Revendeur agréé', style: TextStyle(color: Colors.green[800])),
                       ],
                     ),
                     10.heightBox,

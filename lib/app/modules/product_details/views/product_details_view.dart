@@ -15,19 +15,13 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: Container(
-          
-          child: const Icon(Icons.close, color: Vx.green500,)
-        ).cornerRadius(7).onTap(Get.back),
+            child: const Icon(
+          Icons.close,
+          color: Vx.green500,
+        )).cornerRadius(7).onTap(Get.back),
         actions: [
-          '+ Stock'.text.color(Vx.green700).make().onTap(() => Get.toNamed(
-            Routes.REAPFORM, 
-            arguments: {
-              'product_id': controller.product.value?.id, 
-              'product_name': controller.product.value?.name, 
-              'product_price': controller.product.value?.price
-            }
-          )),
-          
+          '+ Enregistrer une vente'.text.color(Vx.green700).make().py(5).px(10)
+          .onTap(() =>  Get.toNamed(Routes.NEWSELL, arguments: {'product_id': controller.product.value?.id, 'product_name': controller.product.value?.name})),
         ],
         title: const Text('Details Produit'),
       ),
@@ -45,12 +39,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     '${controller.product.value?.name}',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  Text(
-                    'Quantite : ${controller.product.value?.quantity}',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.grey,
-                        ),
-                  ),
+                  Text('Mon stock restant: ${controller.product.value?.stock}'),
                 ],
               ),
             ),
@@ -61,49 +50,54 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
               child: Stack(
                 children: [
                   Obx(() => PageView.builder(
-                    onPageChanged: controller.updateImageIndex,
-                    itemCount: controller.product.value?.images?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final image = controller.product.value?.images?[index];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(
-                            image?['link'] ?? '',
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Center(child: Icon(Icons.image, size: 50)),
-                          ),
-                        ),
-                      );
-                    },
-                  )),
+                        onPageChanged: controller.updateImageIndex,
+                        itemCount:
+                            controller.product.value?.images?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final image =
+                              controller.product.value?.images?[index];
+                          return Container(
+                            height: MediaQuery.of(context).size.height / 10 * 2,
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(
+                                image?['link'] ?? '',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Center(
+                                        child: Icon(Icons.image, size: 50)),
+                              ),
+                            ),
+                          );
+                        },
+                      )),
                   // Carousel Indicators
                   Positioned(
                     bottom: 20,
                     left: 0,
                     right: 0,
                     child: Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        controller.product.value?.images?.length ?? 0,
-                        (index) => Container(
-                          width: 8,
-                          height: 8,
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: controller.currentImageIndex.value == index
-                                ? secondaryColor
-                                : Colors.grey.withOpacity(0.5),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            controller.product.value?.images?.length ?? 0,
+                            (index) => Container(
+                              width: 8,
+                              height: 8,
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:
+                                    controller.currentImageIndex.value == index
+                                        ? secondaryColor
+                                        : Colors.grey.withOpacity(0.5),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )),
+                        )),
                   ),
                 ],
               ),
@@ -126,7 +120,6 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             */
             // Tabs
             DefaultTabController(
-
               length: 3,
               child: Column(
                 children: [
@@ -135,14 +128,13 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     labelColor: secondaryColor,
                     tabs: [
                       Tab(text: 'Description'),
-                      Tab(text: 'Specification'),
+                      Tab(text: 'Spécifications'),
                       Tab(text: "Précaution d'emploi"),
                     ],
                   ),
                   SizedBox(
                     height: 200,
                     child: TabBarView(
-                      
                       children: [
                         // Overview Tab
                         Padding(
@@ -153,26 +145,27 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                           ),
                         ).scrollVertical(),
                         // Specification Tab
-                        Center(child: VStack([
+                        VStack([
                           "Cas d'utilisation".text.bold.make(),
                           5.heightBox,
                           "${controller.product.value?.use_case}".text.make(),
                           15.heightBox,
-
                           "Ingrédients".text.bold.make(),
                           5.heightBox,
-                          "${controller.product.value?.incredients}".text.make(),
+                          "${controller.product.value?.incredients}"
+                              .text
+                              .make(),
                           15.heightBox,
-
                           "Conservation".text.bold.make(),
                           5.heightBox,
                           "${controller.product.value?.storage}".text.make(),
                           15.heightBox,
-
-
-                        ])).p(16),
+                        ]).p(16),
                         // Review Tab
-                        Center(child: Text('${controller.product.value?.reference}')).p(16),
+                        Center(
+                                child: Text(
+                                    '${controller.product.value?.precautions}'))
+                            .p(16),
                       ],
                     ),
                   ),
@@ -180,7 +173,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
               ),
             ),
           ],
-        ),
+        ).scrollVertical(),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),
@@ -205,7 +198,14 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                   ),
             ),
             ElevatedButton(
-              onPressed: () => { Get.toNamed(Routes.NEWSELL, arguments: {'product_id': controller.product.value?.id, 'product_name': controller.product.value?.name})}, // Implement add to cart functionality
+              onPressed: () => Get.toNamed(
+                  Routes.REAPFORM,
+                  arguments: {
+                    'product_id': controller.product.value?.id,
+                    'product_name': controller.product.value?.name,
+                    'product_price': controller.product.value?.price
+                  }
+                ), // Implement add to cart functionality
               style: ElevatedButton.styleFrom(
                 backgroundColor: secondaryColor,
                 padding: const EdgeInsets.symmetric(
@@ -214,7 +214,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                 ),
               ),
               child: const Text(
-                '+ Vente',
+                '+ Me réapprovisionner',
                 style: TextStyle(color: Colors.white),
               ),
             ),
