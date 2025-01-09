@@ -44,7 +44,7 @@ class ProfileView extends GetView<ProfileController> {
                             backgroundColor: Colors.grey[200],
                             backgroundImage: const AssetImage('assets/images/avatar.png'),
                           ),
-                           Obx(() => Positioned(
+                           Positioned(
                             bottom: 0,
                             right: 0,
                             child: Container(
@@ -56,25 +56,25 @@ class ProfileView extends GetView<ProfileController> {
                                 border: Border.all(color: Colors.white, width: 2),
                               ),
                             ),
-                          )),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Obx(() => Text(
+                      Text(
                         "${controller.authController.box.read("user")['seller']['name']}",
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
-                      )),
+                      ).centered(),
                       const SizedBox(height: 4),
-                      Obx(() =>  (controller.authController.box.read("user")['is_premium']) 
+                      (controller.authController.box.read("user")['is_premium']) 
                         ? GFButton(
                           elevation: 0,
                         onPressed: (){},
                         text: "Compte Premium",
                         shape: GFButtonShape.pills,
-                      ) : SizedBox(),),
+                      ) : SizedBox(),
                     ],
                   ),
                 ),

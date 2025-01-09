@@ -7,6 +7,7 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:millsellers/app/modules/resume/views/get_premium_view.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
 import 'package:millsellers/app/views/views/input_wrapper_view.dart';
+import 'package:millsellers/utils/contants.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:millsellers/app/data/models/product_model.dart';
@@ -38,18 +39,18 @@ class ResumeView extends GetView<ResumeController> {
                       .onTap(Scaffold.of(context).openDrawer)),
               BounceInRight(
                   child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.orange,
-                        width: 2.0,
-                      ),
-                    ),
-                    child: Image.asset(
-                      "assets/images/avatar.png",
-                      height: 50,
-                    ),
-                  )).onTap(() {
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: controller.iresource.is_premium! ? Colors.orange : Colors.white,
+                    width: 2.0,
+                  ),
+                ),
+                child: Image.asset(
+                  "assets/images/avatar.png",
+                  height: 50,
+                ),
+              )).onTap(() {
                 Get.toNamed(Routes.PROFILE);
               }),
             ],
@@ -69,7 +70,6 @@ class ResumeView extends GetView<ResumeController> {
               "${controller.iresource.seller?.name}".text.size(18).bold.make(),
               "Bienvenue dans 1000 Vendeurs".text.size(18).gray500.make(),
             ]).px(10),
-          
             FadeIn(
               child: HStack(
                 [
@@ -278,7 +278,9 @@ class ResumeView extends GetView<ResumeController> {
                 ),
               ),
               onTap: () => {Get.to(GetPremiumView())},
-            ).hide(isVisible: !controller.resource.value.is_premium! && !controller.resource.value.is_pro!),
+            ).hide(
+                isVisible: !controller.resource.value.is_premium! &&
+                    !controller.resource.value.is_pro!),
             20.heightBox,
             getProductsWidget(context),
             20.heightBox,
@@ -351,12 +353,12 @@ class ResumeView extends GetView<ResumeController> {
     return VStack([
       "Challenges en cours".text.bold.size(17).make(),
       10.heightBox,
-
       FutureBuilder<List<dynamic>?>(
         future: controller.getChallenges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator(color: Vx.green700).centered();
+            return const CircularProgressIndicator(color: Vx.green700)
+                .centered();
           } else if (snapshot.hasData) {
             return HStack(
               snapshot.data!
@@ -366,7 +368,8 @@ class ResumeView extends GetView<ResumeController> {
           } else if (snapshot.hasError) {
             return "Aucun challenge en cours".text.size(14).make().centered();
           } else {
-            return const CircularProgressIndicator(color: Vx.green700).centered();
+            return const CircularProgressIndicator(color: Vx.green700)
+                .centered();
           }
         },
       )
@@ -381,7 +384,10 @@ class ResumeView extends GetView<ResumeController> {
     ]).p(10);
   }
 
-  Widget challengeWidget(dynamic challenge) {
+  Widget challengeWidget(Map<String, dynamic> challenge) {
+    final start_date = DateTime.parse(challenge['start_date']);
+    final end_date = DateTime.parse(challenge['end_date']);
+
     return InkWell(
       child: SizedBox(
         width: Get.width / 12 * 5,
@@ -389,7 +395,7 @@ class ResumeView extends GetView<ResumeController> {
         child: VStack(
           [
             Image.network(
-              challenge['image'] ?? '',
+              challenge['image']['link'] ?? '',
               width: 50,
               height: 50,
               fit: BoxFit.cover,
@@ -402,15 +408,20 @@ class ResumeView extends GetView<ResumeController> {
               ],
               alignment: MainAxisAlignment.center,
             ).w(double.maxFinite),
-            "${challenge['description']}".text.make(),
-            2.heightBox,
-            "${ DateTime.parse(challenge['start_date'])} - ${ DateTime.parse(challenge['end_date'])}".text.gray500.make()
+            
+            "${start_date.day} ${_getMonthName(start_date.month)} ${start_date.year} - ${end_date.day} ${_getMonthName(end_date.month)} ${end_date.year}"
+                .text
+                .size(12)
+                .gray500
+                .make().centered()
           ],
           alignment: MainAxisAlignment.center,
           crossAlignment: CrossAxisAlignment.center,
         ),
-      ).card.white.make(),
-      onTap: () => {},
+      ).color(Vx.white).p(4).card.color(primaryColor).make(),
+      onTap: () => {
+        _showChallengeBottomSheet(challenge)
+      },
     );
   }
 
@@ -450,14 +461,14 @@ class ResumeView extends GetView<ResumeController> {
                         const Icon(Icons.image),
                   )
                 : const Icon(Icons.image),
-            HStack([
-              "${product.name}".text.bold.make(),
-            
-            ], alignment: MainAxisAlignment.center,).w(double.maxFinite),
-
+            HStack(
+              [
+                "${product.name}".text.bold.make(),
+              ],
+              alignment: MainAxisAlignment.center,
+            ).w(double.maxFinite),
             "${(product.price).toString().numCurrency} FCFA".text.bold.make(),
-
-           "Mon stock ${product.stock}".text.make(),
+            "Mon stock ${product.stock}".text.make(),
           ],
           alignment: MainAxisAlignment.center,
           crossAlignment: CrossAxisAlignment.center,
@@ -466,5 +477,78 @@ class ResumeView extends GetView<ResumeController> {
       onTap: () =>
           Get.toNamed(Routes.PRODUCT_DETAILS, arguments: {'product': product}),
     );
+  }
+
+
+  String _getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return "Jan";
+      case 2:
+        return "Fev";
+      case 3:
+        return "Mars";
+      case 4:
+        return "Avril";
+      case 5:
+        return "Mai";
+      case 6:
+        return "Juin";
+      case 7:
+        return "Juillet";
+      case 8:
+        return "Aout";
+      case 9:
+        return "Septembre";
+      case 10:
+        return "Octobre";
+      case 11:
+        return "Novembre";
+      case 12:
+        return "Decembre";
+      default:
+        return "";
+    }
+  }
+
+
+  Future<void> _showChallengeBottomSheet(Map<String, dynamic> challenge) {
+    return Get.bottomSheet(VStack([
+      HStack([
+        Container(
+            padding: const EdgeInsets.all(3),
+            color: Colors.white,
+            child: const FaIcon(
+              Icons.close,
+              color: Vx.gray700,
+            )).cornerRadius(7).onTap(Get.back),
+      ], alignment: MainAxisAlignment.end,).pSymmetric(h: 10).w(double.maxFinite),
+      10.heightBox,
+      Container(
+        color: Colors.white,
+        child: VStack([
+          Text(challenge["title"], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          20.heightBox,
+          Image.network(
+              challenge['image']['link'] ?? '',
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.image),
+            ),
+          20.heightBox,
+          Text(challenge["description"]),
+          20.heightBox,
+          'Termes'.text.bold.make(),
+          10.heightBox,
+          Text(challenge["terms"]),
+          20.heightBox,
+          'Recompenses'.text.bold.make(),
+          10.heightBox,
+          Text(challenge["rewards"]),
+        ]),
+      ).p(12).card.white.make().w(double.maxFinite),
+    ]).w(double.maxFinite));
   }
 }

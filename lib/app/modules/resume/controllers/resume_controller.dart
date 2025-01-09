@@ -249,8 +249,11 @@ class ResumeController extends GetxController {
     final response = await dio.get(
         'https://api.1000vendeurs.academy/api/seller/challenges',
         options: options);
+        
+    
+
     if (response.statusCode == 200) {
-      return response.data;
+      return response.data['data'];
     } else {
       return null;
     }

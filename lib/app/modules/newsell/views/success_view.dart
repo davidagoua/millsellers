@@ -163,8 +163,7 @@ class SuccessView extends GetView<NewsellController> {
                   fullWidthButton: true,
                   blockButton: true,
                   elevation: 0,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15),
+                  
                   onPressed: () =>{Get.offAllNamed(Routes.INDEX)}
                 )
               ],
