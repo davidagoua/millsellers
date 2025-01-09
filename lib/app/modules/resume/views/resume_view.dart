@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:millsellers/app/modules/resume/views/get_premium_view.dart';
 import 'package:millsellers/app/routes/app_pages.dart';
@@ -42,7 +43,9 @@ class ResumeView extends GetView<ResumeController> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: controller.iresource.is_premium! ? Colors.orange : Colors.white,
+                    color: controller.iresource.is_premium!
+                        ? Colors.orange
+                        : Colors.white,
                     width: 2.0,
                   ),
                 ),
@@ -362,7 +365,7 @@ class ResumeView extends GetView<ResumeController> {
           } else if (snapshot.hasData) {
             return HStack(
               snapshot.data!
-                  .map((challenge) => challengeWidget(challenge))
+                  .map((challenge) => _challengeWidgetAlt(challenge))
                   .toList(),
             ).scrollHorizontal();
           } else if (snapshot.hasError) {
@@ -408,20 +411,18 @@ class ResumeView extends GetView<ResumeController> {
               ],
               alignment: MainAxisAlignment.center,
             ).w(double.maxFinite),
-            
             "${start_date.day} ${_getMonthName(start_date.month)} ${start_date.year} - ${end_date.day} ${_getMonthName(end_date.month)} ${end_date.year}"
                 .text
                 .size(12)
                 .gray500
-                .make().centered()
+                .make()
+                .centered()
           ],
           alignment: MainAxisAlignment.center,
           crossAlignment: CrossAxisAlignment.center,
         ),
       ).color(Vx.white).p(4).card.color(primaryColor).make(),
-      onTap: () => {
-        _showChallengeBottomSheet(challenge)
-      },
+      onTap: () => {_showChallengeBottomSheet(challenge)},
     );
   }
 
@@ -463,22 +464,21 @@ class ResumeView extends GetView<ResumeController> {
                 : const Icon(Icons.image),
             HStack(
               [
-                "${product.name}".text.bold.make(),
+                "${product.name}".text.wrapWords(true).ellipsis.bold.make(),
               ],
               alignment: MainAxisAlignment.center,
             ).w(double.maxFinite),
-            "${(product.price).toString().numCurrency} FCFA".text.bold.make(),
+            "${(product.price).toString().numCurrency} XOF".text.bold.make(),
             "Mon stock ${product.stock}".text.make(),
           ],
           alignment: MainAxisAlignment.center,
           crossAlignment: CrossAxisAlignment.center,
         ),
-      ).card.white.make(),
+      ).p(4).card.p0.white.make(),
       onTap: () =>
           Get.toNamed(Routes.PRODUCT_DETAILS, arguments: {'product': product}),
     );
   }
-
 
   String _getMonthName(int month) {
     switch (month) {
@@ -511,32 +511,36 @@ class ResumeView extends GetView<ResumeController> {
     }
   }
 
-
   Future<void> _showChallengeBottomSheet(Map<String, dynamic> challenge) {
     return Get.bottomSheet(VStack([
-      HStack([
-        Container(
-            padding: const EdgeInsets.all(3),
-            color: Colors.white,
-            child: const FaIcon(
-              Icons.close,
-              color: Vx.gray700,
-            )).cornerRadius(7).onTap(Get.back),
-      ], alignment: MainAxisAlignment.end,).pSymmetric(h: 10).w(double.maxFinite),
+      HStack(
+        [
+          Container(
+              padding: const EdgeInsets.all(3),
+              color: Colors.white,
+              child: const FaIcon(
+                Icons.close,
+                color: Vx.gray700,
+              )).cornerRadius(7).onTap(Get.back),
+        ],
+        alignment: MainAxisAlignment.end,
+      ).pSymmetric(h: 10).w(double.maxFinite),
       10.heightBox,
       Container(
         color: Colors.white,
         child: VStack([
-          Text(challenge["title"], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          Text(challenge["title"],
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           20.heightBox,
           Image.network(
-              challenge['image']['link'] ?? '',
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.image),
-            ),
+            challenge['image']['link'] ?? '',
+            width: double.maxFinite,
+            height: 50,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+                const Icon(Icons.image),
+          ),
           20.heightBox,
           Text(challenge["description"]),
           20.heightBox,
@@ -551,4 +555,29 @@ class ResumeView extends GetView<ResumeController> {
       ).p(12).card.white.make().w(double.maxFinite),
     ]).w(double.maxFinite));
   }
+
+  Widget _challengeWidgetAlt(Map<String, dynamic> challenge) {
+    final start_date = DateTime.parse(challenge['start_date']);
+    final end_date = DateTime.parse(challenge['end_date']);
+
+    return InkWell(
+      child: GFImageOverlay(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(5),
+        image: NetworkImage(challenge['image']['link'] ?? ''),
+        colorFilter: const ColorFilter.mode(
+          Colors.black54,
+          BlendMode.darken,
+        ),
+        child: VStack([
+          Spacer(),
+          "${challenge['title']}".text.white.bold.make(),
+          5.heightBox,
+          "${start_date.day} ${_getMonthName(start_date.month)}  - ${end_date.day} ${_getMonthName(end_date.month)} ${end_date.year}".text.white.make(),
+        ], crossAlignment: CrossAxisAlignment.center,).p(8)
+        
+      ).h(200).w(Get.width / 12 * 5).p(4),
+      onTap: () => {_showChallengeBottomSheet(challenge)}
+  );
+  } 
 }

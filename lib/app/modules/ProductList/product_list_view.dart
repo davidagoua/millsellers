@@ -33,7 +33,7 @@ class ProductListView extends GetView<ProductListController> {
                     border:InputBorder.none,
                   ),
                   onChanged: (value) {
-                    // TODO: Implémenter la recherche
+                    controller.search(value);
                   },
                 ).card.color(Vx.gray100).elevation(0)
                     .customRounded(BorderRadius.circular(10)).make().expand(flex: 1),
@@ -44,13 +44,41 @@ class ProductListView extends GetView<ProductListController> {
                       height: Get.height / 4,
                       width: Get.width,
                       color: Colors.white,
-                      child: Column(
+                      child: Obx(() =>Column(
                         children: [
                           const Text("Filtres"),
                           10.heightBox,
-                            
+                          HStack([
+                            Text("Prix Max"),
+                            Spacer(),
+                            Slider(
+                              secondaryTrackValue: controller.morePrice.value,
+                              label: "${controller.lessPrice.value.numCurrency} XOF",
+                              activeColor: Vx.green700,
+                              divisions: 500,
+                              min: 0,
+                              max: 100000,
+                              value: controller.lessPrice.value,
+                              onChanged: (value) {
+                                controller.lessPrice.value = value;
+                              },
+                            ),
+                          ]),
+                          5.heightBox,
+                          HStack([
+                            "En stock".text.make(),
+                            Spacer(),
+                            Switch(
+                              activeColor: Vx.green700,
+                              activeTrackColor: Vx.green700,
+                              value: controller.isInStock.value,
+                              onChanged: (value) {
+                                controller.isInStock.value = value;
+                              },
+                            ),
+                          ])
                         ],
-                      ).p(20),
+                      ).p(20)),
                     ),
                     
                     isScrollControlled: true,
@@ -76,9 +104,9 @@ class ProductListView extends GetView<ProductListController> {
                         onRefresh: controller.refreshProducts,
                         showChildOpacityTransition: false,
                         child: ListView.builder(
-                          itemCount: controller.products.length,
+                          itemCount: controller.productListFiter.length,
                           itemBuilder: (context, index) {
-                            final Product product = controller.products[index];
+                            final Product product = controller.productListFiter[index];
                             return Card(
                               color: Colors.white,
                               margin: const EdgeInsets.symmetric(
@@ -97,15 +125,8 @@ class ProductListView extends GetView<ProductListController> {
                                       )
                                     : const Icon(Icons.image),
                                 title: Text(product.name ?? 'Sans nom', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Réf: ${product.description ?? 'N/A'}', style: TextStyle(fontSize: 14, color: Vx.gray600),),
-
-                                  ],
-                                ),
-                                trailing: Text(
-                                  '${product.price?.numCurrency ?? '0'} FCFA',
+                                subtitle: Text(
+                                  '${product.price?.numCurrency ?? '0'} XOF',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -137,11 +158,7 @@ class ProductListView extends GetView<ProductListController> {
                 ).cornerRadius(7).onTap(Get.back),
               ),
              
-              BounceInRight(
-                  child: Image.asset(
-                    "assets/images/avatar.png",
-                    height: 50,
-                  ))
+              
             ],
             alignment: MainAxisAlignment.spaceBetween,
             crossAlignment: CrossAxisAlignment.center,

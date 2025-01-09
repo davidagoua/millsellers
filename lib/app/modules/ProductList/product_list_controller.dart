@@ -9,13 +9,21 @@ import 'package:logger/logger.dart';
 final logger = Logger();
 
 class ProductListController extends GetxController {
-
-
   var authManager = Get.find<AuthController>();
   final products = <Product>[].obs;
   final isLoading = false.obs;
   final dio = Dio();
   final next_route = "".obs;
+  final RxDouble lessPrice = 0.0.obs;
+  final RxDouble morePrice = 0.0.obs;
+  final RxBool isInStock = false.obs;
+  final search = "".obs;
+
+  get productListFiter => products.where((product) {
+        return product.price! <= lessPrice.value &&
+            (isInStock.value ? product.stock! > 0 : true) &&
+            (product.name!.toLowerCase().contains(search.value.toLowerCase()));
+      }).toList();
 
   @override
   void onInit() {

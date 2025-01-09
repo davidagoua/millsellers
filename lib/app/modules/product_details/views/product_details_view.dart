@@ -46,7 +46,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
 
             // Product Image Carousel
             SizedBox(
-              height: 300,
+              height: 200,
               child: Stack(
                 children: [
                   Obx(() => PageView.builder(
@@ -133,7 +133,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     ],
                   ),
                   SizedBox(
-                    height: 200,
+                    height: 400,
                     child: TabBarView(
                       children: [
                         // Overview Tab
@@ -160,7 +160,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                           5.heightBox,
                           "${controller.product.value?.storage}".text.make(),
                           15.heightBox,
-                        ]).p(16),
+                        ]).scrollVertical().p(16),
                         // Review Tab
                         Center(
                                 child: Text(
@@ -192,9 +192,10 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '${(controller.product.value?.price).toString().numCurrency} FCFA',
+              '${(controller.product.value?.price).toString().numCurrency} XOF',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
             ),
             ElevatedButton(
