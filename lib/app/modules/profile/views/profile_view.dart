@@ -16,7 +16,7 @@ class ProfileView extends GetView<ProfileController> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 Builder(

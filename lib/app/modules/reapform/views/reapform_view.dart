@@ -65,13 +65,19 @@ class ReapformView extends GetView<ReapformController> {
                   5.heightBox,
                   InputWrapperView(
                     child: DropdownSearch<String>(
+                      filterFn: (item, filter) => item.contains(filter),
                       items: (value, leadProps)=> kCountries.valuesList(),
                       onChanged: (item)=>{
                         controller.countryCtrl.text = item ?? "Côte d'Ivoire"
                       },
+                      mode: Mode.form,
+                      decoratorProps: DropDownDecoratorProps(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
                       popupProps: PopupProps.menu(
                         showSelectedItems: true,
-                        disabledItemFn: (String s) => s.startsWith('I'),
                       ),
                     ),
                   ),

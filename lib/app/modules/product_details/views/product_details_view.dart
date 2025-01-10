@@ -198,6 +198,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     fontSize: 20,
                   ),
             ),
+            Spacer(),
             ElevatedButton(
               onPressed: () => Get.toNamed(
                   Routes.REAPFORM,

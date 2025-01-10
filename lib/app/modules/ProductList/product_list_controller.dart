@@ -14,7 +14,7 @@ class ProductListController extends GetxController {
   final isLoading = false.obs;
   final dio = Dio();
   final next_route = "".obs;
-  final RxDouble lessPrice = 0.0.obs;
+  final RxDouble lessPrice = 50000.0.obs;
   final RxDouble morePrice = 0.0.obs;
   final RxBool isInStock = false.obs;
   final search = "".obs;

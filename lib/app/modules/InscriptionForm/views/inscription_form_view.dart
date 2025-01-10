@@ -88,6 +88,11 @@ class InscriptionFormView extends GetView<InscriptionFormController> {
                   onChanged: (item)=>{
                     controller.countryCtrl.text = item ?? "Côte d'Ivoire"
                   },
+                  decoratorProps: DropDownDecoratorProps(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
                   popupProps: PopupProps.menu(
                     showSelectedItems: true,
                     disabledItemFn: (String s) => s.startsWith('I'),

@@ -38,20 +38,12 @@ class FieulView extends GetView<FieulController> {
             crossAlignment: CrossAxisAlignment.center,
           ).w(double.maxFinite),
           10.heightBox,
-          FutureBuilder<List<dynamic>?>(
-            future: controller.fetchFieul(),
+          FutureBuilder<List<Widget>>(
+            future: _fetchFieulExpansionTiles(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return Column(
-                  children: snapshot.data!
-                      .map((e) => ExpansionTile(
-                            backgroundColor: primaryColor,
-                            leading: Icon(Icons.person_2_outlined),
-                            title: "${e['name']}".text.make(),
-                            subtitle: "${_getGender(e['gender'])} - ${e['code']}".text.make(),
-                            children: [],
-                          ).card.make())
-                      .toList(),
+                  children: snapshot.data!,
                 );
               } else {
                 return const CircularProgressIndicator(color: Vx.green700).centered();
@@ -69,14 +61,20 @@ class FieulView extends GetView<FieulController> {
     return await _buildExpansionTiles(initialFieuls);
   }
 
-  Future<List<Widget>> _buildExpansionTiles(List<dynamic> fieuls) async {
+  Future<List<Widget>> _buildExpansionTiles(List<dynamic> fieuls, {double horizontalPadding = 8}) async {
     List<Widget> tiles = [];
     for (var fieul in fieuls) {
       var children = await controller.fetchFieul(id: fieul['id']);
       tiles.add(ExpansionTile(
+        leading: Icon(Icons.fork_right),
+
+        tilePadding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 8),
         title: Text(fieul['name']),
-        children: children != null ? await _buildExpansionTiles(children) : [],
-      ));
+        subtitle: VStack([
+          "${fieul['code']} - ${_getGender(fieul['gender'])}".text.gray400.make()
+        ]),
+        children: children != null ? await _buildExpansionTiles(children, horizontalPadding: horizontalPadding + 16) : [],
+      ).card.white.elevation(1).roundedSM.make());
     }
     return tiles;
   }
@@ -84,9 +82,9 @@ class FieulView extends GetView<FieulController> {
   String _getGender(String gender) {
     switch (gender) {
       case 'male':
-        return "Femme";
-      case 'female':
         return "Homme";
+      case 'female':
+        return "Femme";
       default:
         return "";
     }
